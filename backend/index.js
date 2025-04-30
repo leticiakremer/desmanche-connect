@@ -1,0 +1,85 @@
+import mongoose from 'mongoose';
+import express from 'express';
+import bodyParser from 'body-parser';
+import { validationResult } from 'express-validator';
+import { createPostValidationSchema, searchPostsValidationSchema, deletePostValidationSchema } from './validations/postValidations.js';
+
+await mongoose.connect('mongodb+srv://leticiakremer24:kHEIdImPi76CPpsu@clusterpds.ofiwoyd.mongodb.net/?retryWrites=true&w=majority&appName=ClusterPDS');
+
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
+
+
+const PostSchema = new Schema({
+    id: ObjectId,
+    title: String,
+    description: String,
+    category: String,
+    active: Boolean,
+    images: [String],
+    coverImage: Number,
+    price: Number,
+});
+
+const PostModel = mongoose.model('Post', PostSchema);
+
+const app = express();
+
+app.use(bodyParser.json())
+
+app.post('/v1/posts', createPostValidationSchema, async (req, res) => {
+    // console.log("headers", req.headers);
+    // console.log("params", req.params);
+    // console.log("query params", req.query);
+    // console.log("body", req.body);
+    let result = validationResult(req);
+    if (!result.isEmpty()) {
+        return res.status(400).json({ errors: result.array() });
+    }
+
+    const { title, description, category, active, images, coverImage, price } = req.body;
+
+    let post = new PostModel({ title, description, category, active, images, coverImage, price });
+    await post.save();
+
+    //TODO: Criar a postagem no instagram e facebook
+
+    res.status(200).json({ message: "Post created" })
+});
+
+app.get('/v1/posts', searchPostsValidationSchema, async (req, res) => {
+
+    let result = validationResult(req);
+    if (!result.isEmpty()) {
+        return res.status(400).json({ errors: result.array() });
+    }
+
+    const { search } = req.query;
+    const posts = await PostModel.find({
+        $or: [
+            { title: { $regex: search, $options: 'i' } },
+            { description: { $regex: search, $options: 'i' } }
+            //indexação seria melhor que regex, mas não é o foco do projeto
+        ]
+    }).sort({ createdAt: -1 });
+    res.status(200).json(posts);
+});
+
+app.delete('/v1/posts/:id', deletePostValidationSchema, async (req, res) => {
+
+
+    let result = validationResult(req);
+    if (!result.isEmpty()) {
+        return res.status(400).json({ errors: result.array() });
+    }
+
+    const { id } = req.params;
+    await PostModel.deleteOne({ _id: id });
+    res.status(200).json({ message: "Post deleted" });
+
+});
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
+
