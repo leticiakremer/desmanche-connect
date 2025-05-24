@@ -3,8 +3,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { validationResult } from 'express-validator';
 import { createPostValidationSchema, searchPostsValidationSchema, deletePostValidationSchema } from './validations/postValidations.js';
+import cors from 'cors';
 
-await mongoose.connect('mongodb+srv://leticiakremer24:kHEIdImPi76CPpsu@clusterpds.ofiwoyd.mongodb.net/?retryWrites=true&w=majority&appName=ClusterPDS');
+
+await mongoose.connect('mongodb+srv://leticiakremer24:kHEIdImPi76CPpsu@clusterpds.ofiwoyd.mongodb.net/pds?retryWrites=true&w=majority&appName=ClusterPDS');
 
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
@@ -24,6 +26,13 @@ const PostSchema = new Schema({
 const PostModel = mongoose.model('Post', PostSchema);
 
 const app = express();
+app.use(cors(
+    {
+        origin: '*',
+        methods: ['GET', 'POST', 'DELETE'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+    }
+))
 
 app.use(bodyParser.json())
 
@@ -48,7 +57,6 @@ app.post('/v1/posts', createPostValidationSchema, async (req, res) => {
 });
 
 app.get('/v1/posts', searchPostsValidationSchema, async (req, res) => {
-
     let result = validationResult(req);
     if (!result.isEmpty()) {
         return res.status(400).json({ errors: result.array() });

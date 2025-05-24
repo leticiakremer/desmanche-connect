@@ -4,7 +4,7 @@
   "description": "Projeto explicação de uma api em node",
   "main": "index.js",
   "scripts": {
-    "dev": "node index.js",
+    "dev": "nodemon index.js",
     "text": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
     "mongoose": "^8.13.2"

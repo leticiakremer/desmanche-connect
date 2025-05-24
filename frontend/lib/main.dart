@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pds_front/app/pages/home/home_page.dart';
 import 'package:pds_front/ui/home/home.dart';
 import 'package:pds_front/ui/splash/splash_screen.dart';
 
@@ -12,6 +13,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SplashScreen());
+    return MaterialApp(home: HomePage());
   }
 }

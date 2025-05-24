@@ -25,7 +25,8 @@ export const searchPostsValidationSchema = checkSchema({
     search: {
         in: ["query"],
         isString: true,
-        notEmpty: true,
+       // notEmpty: true,
+        optional: true,
         errorMessage: 'O campo de busca deve ser informado',
     },
 });

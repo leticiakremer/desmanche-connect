@@ -1,0 +1,10 @@
+name: exemplo
+description: "Exemplo consumo api em dart"
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.1
+
+dev_dependencies:
+  http: ^1.4.0
