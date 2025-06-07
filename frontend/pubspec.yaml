@@ -10,6 +10,12 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.4.0
+  image_picker: ^1.1.2
+  url_launcher: ^6.2.6
+  carousel_slider: ^4.2.1
+  intl: ^0.18.0
+
+
 
 dev_dependencies:
   flutter_test:
@@ -20,4 +26,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-    - assets/splash/
+    - assets/imagecarrosel.jpg
+    - assets/imagecarrosel2.jpg
+    - assets/imagecarrosel3.jpg
+    - assets/logo1.png
+    - assets/logo2.png

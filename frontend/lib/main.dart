@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pds_front/app/pages/home/home_page.dart';
-import 'package:pds_front/ui/home/home.dart';
-import 'package:pds_front/ui/splash/splash_screen.dart';
+import 'package:pds_front/app/pages/home_page.dart';
 
-void main(){
+void main() {
   runApp(MyApp());
 }
 
@@ -13,6 +10,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomePage());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
   }
 }
