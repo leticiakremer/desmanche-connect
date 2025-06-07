@@ -4,7 +4,6 @@ import bodyParser from "body-parser";
 import { validationResult } from "express-validator";
 import {
   createPostValidationSchema,
-  searchPostsValidationSchema,
   deletePostValidationSchema,
 } from "./validations/postValidations.js";
 import cors from "cors";
@@ -17,7 +16,6 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
 const PostSchema = new Schema({
-  id: ObjectId,
   title: String,
   description: String,
   category: String,
@@ -25,6 +23,18 @@ const PostSchema = new Schema({
   images: [String],
   coverImage: Number,
   price: Number,
+});
+
+PostSchema.virtual("id").get(function () {
+  return this._id.toString();
+});
+
+PostSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret) {
+    delete ret._id;
+  },
 });
 
 const PostModel = mongoose.model("Post", PostSchema);
@@ -62,8 +72,7 @@ app.post("/v1/posts", createPostValidationSchema, async (req, res) => {
     coverImage,
     price,
   });
-  await post.save();
-
+  var createdDocument = await post.save();
   //TODO: Criar a postagem no instagram e facebook
 
   res.status(200).json({
@@ -73,7 +82,7 @@ app.post("/v1/posts", createPostValidationSchema, async (req, res) => {
   });
 });
 
-app.get("/v1/posts", searchPostsValidationSchema, async (req, res) => {
+app.get("/v1/posts", async (req, res) => {
   const { search, take, skip } = req.query;
   const searchString = search ? search.toString() : "";
   const posts = await PostModel.find({
@@ -103,6 +112,24 @@ app.get("/v1/posts", searchPostsValidationSchema, async (req, res) => {
   };
 
   res.status(200).json(response);
+});
+
+app.get("/v1/posts/:id", async (req, res) => {
+  const { id } = req.params;
+  var post = await PostModel.findById(id);
+  if (post === null) {
+    return res.status(404).json({
+      messages: ["Post not found"],
+      data: null,
+      errors: null,
+    });
+  }
+
+  res.status(200).json({
+    messages: null,
+    data: post,
+    errors: null,
+  });
 });
 
 app.delete("/v1/posts/:id", deletePostValidationSchema, async (req, res) => {
