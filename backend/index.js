@@ -75,19 +75,26 @@ app.get("/v1/posts", searchPostsValidationSchema, async (req, res) => {
     return res.status(400).json({ errors: result.array() });
   }
 
-  const { search } = req.query;
+  const { search, take, skip } = req.query;
   const posts = await PostModel.find({
     $or: [
       { title: { $regex: search, $options: "i" } },
       { description: { $regex: search, $options: "i" } },
       //indexação seria melhor que regex, mas não é o foco do projeto
     ],
-  }).sort({ createdAt: -1 });
+  }).sort({ createdAt: -1 }).limit(take ?? 10).skip(skip ?? 0);
+
+  const totalCount = await PostModel.countDocuments({
+    $or: [
+      { title: { $regex: search, $options: "i" } },
+      { description: { $regex: search, $options: "i" } },
+    ],
+  });
 
   let response = {
     data: {
       items: posts,
-      total: posts.length,
+      total: totalCount,
     },
     messages: ["Posts retrieved successfully"],
   };
