@@ -74,9 +74,10 @@
       "languageVersion": "3.6"
     }
   ],
+  "generated": "2025-06-07T18:40:20.684810Z",
   "generator": "pub",
-  "generatorVersion": "3.8.0",
+  "generatorVersion": "3.6.1",
   "flutterRoot": "file:///C:/src/flutter",
-  "flutterVersion": "3.32.0",
+  "flutterVersion": "3.27.2",
   "pubCache": "file:///C:/Users/letic/AppData/Local/Pub/Cache"
 }

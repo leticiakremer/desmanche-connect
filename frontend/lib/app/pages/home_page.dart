@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   void getAllPosts() async {
     final allPosts = await PostService.getAllPosts();
     setState(() {
-      posts = allPosts;
+     posts = allPosts;
     });
   }
 
@@ -225,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           );
                         },
-                        icon: const Icon(Icons.add),
+                        icon: const Icon(Icons.add, color: Colors.white,),
                         label: const Text("Criar Post"),
                       ),
                     ],

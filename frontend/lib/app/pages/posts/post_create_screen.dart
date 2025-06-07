@@ -162,7 +162,10 @@ class _CreatePostPageState extends State<CreatePostPage> {
                   const SizedBox(height: 32),
                   ElevatedButton.icon(
                     onPressed: _submit,
-                    icon: const Icon(Icons.save),
+                    icon: const Icon(
+                      Icons.save,
+                      color: Colors.white,
+                    ),
                     label: Text(
                       'Salvar Anúncio',
                       style: TextStyle(color: azul),
