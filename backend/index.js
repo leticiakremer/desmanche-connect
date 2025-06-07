@@ -66,7 +66,7 @@ app.post("/v1/posts", createPostValidationSchema, async (req, res) => {
 
   //TODO: Criar a postagem no instagram e facebook
 
-  res.status(200).json({ message: "Post created" });
+  res.status(200).json({ message: ["Post created successfully"], data: post, errors: null });
 });
 
 app.get("/v1/posts", searchPostsValidationSchema, async (req, res) => {
@@ -82,7 +82,10 @@ app.get("/v1/posts", searchPostsValidationSchema, async (req, res) => {
       { description: { $regex: search, $options: "i" } },
       //indexação seria melhor que regex, mas não é o foco do projeto
     ],
-  }).sort({ createdAt: -1 }).limit(take ?? 10).skip(skip ?? 0);
+  })
+    .sort({ createdAt: -1 })
+    .limit(take ?? 10)
+    .skip(skip ?? 0);
 
   const totalCount = await PostModel.countDocuments({
     $or: [
