@@ -41,13 +41,9 @@ app.use(
 app.use(bodyParser.json());
 
 app.post("/v1/posts", createPostValidationSchema, async (req, res) => {
-  // console.log("headers", req.headers);
-  // console.log("params", req.params);
-  // console.log("query params", req.query);
-  // console.log("body", req.body);
   let result = validationResult(req);
   if (!result.isEmpty()) {
-    return res.status(400).json({ errors: result.array() });
+    return res.status(400).json({ messages: ["Failed to create post due to validation errors"], data: null, errors: result.array() });
   }
 
   const { title, description, category, active, images, coverImage, price } =
@@ -66,7 +62,7 @@ app.post("/v1/posts", createPostValidationSchema, async (req, res) => {
 
   //TODO: Criar a postagem no instagram e facebook
 
-  res.status(200).json({ message: ["Post created successfully"], data: post, errors: null });
+  res.status(200).json({ messages: ["Post created successfully"], data: post, errors: null });
 });
 
 app.get("/v1/posts", searchPostsValidationSchema, async (req, res) => {
@@ -113,7 +109,7 @@ app.delete("/v1/posts/:id", deletePostValidationSchema, async (req, res) => {
 
   const { id } = req.params;
   await PostModel.deleteOne({ _id: id });
-  res.status(200).json({ message: "Post deleted" });
+  res.status(200).json({ messages: ["Post deleted successfully"], data: null, errors: null });
 });
 
 app.listen(3000, () => {
