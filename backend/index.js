@@ -43,7 +43,11 @@ app.use(bodyParser.json());
 app.post("/v1/posts", createPostValidationSchema, async (req, res) => {
   let result = validationResult(req);
   if (!result.isEmpty()) {
-    return res.status(400).json({ messages: ["Failed to create post due to validation errors"], data: null, errors: result.array() });
+    return res.status(400).json({
+      messages: ["Failed to create post due to validation errors"],
+      data: null,
+      errors: result.array(),
+    });
   }
 
   const { title, description, category, active, images, coverImage, price } =
@@ -62,20 +66,20 @@ app.post("/v1/posts", createPostValidationSchema, async (req, res) => {
 
   //TODO: Criar a postagem no instagram e facebook
 
-  res.status(200).json({ messages: ["Post created successfully"], data: post, errors: null });
+  res.status(200).json({
+    messages: ["Post created successfully"],
+    data: post,
+    errors: null,
+  });
 });
 
 app.get("/v1/posts", searchPostsValidationSchema, async (req, res) => {
-  let result = validationResult(req);
-  if (!result.isEmpty()) {
-    return res.status(400).json({ errors: result.array() });
-  }
-
   const { search, take, skip } = req.query;
+  const searchString = search ? search.toString() : "";
   const posts = await PostModel.find({
     $or: [
-      { title: { $regex: search, $options: "i" } },
-      { description: { $regex: search, $options: "i" } },
+      { title: { $regex: searchString, $options: "i" } },
+      { description: { $regex: searchString, $options: "i" } },
       //indexação seria melhor que regex, mas não é o foco do projeto
     ],
   })
@@ -85,8 +89,8 @@ app.get("/v1/posts", searchPostsValidationSchema, async (req, res) => {
 
   const totalCount = await PostModel.countDocuments({
     $or: [
-      { title: { $regex: search, $options: "i" } },
-      { description: { $regex: search, $options: "i" } },
+      { title: { $regex: searchString, $options: "i" } },
+      { description: { $regex: searchString, $options: "i" } },
     ],
   });
 
@@ -104,12 +108,20 @@ app.get("/v1/posts", searchPostsValidationSchema, async (req, res) => {
 app.delete("/v1/posts/:id", deletePostValidationSchema, async (req, res) => {
   let result = validationResult(req);
   if (!result.isEmpty()) {
-    return res.status(400).json({ errors: result.array() });
+    return res.status(400).json({
+      messages: ["Failed to delete post due to validation errors"],
+      data: null,
+      errors: result.array(),
+    });
   }
 
   const { id } = req.params;
   await PostModel.deleteOne({ _id: id });
-  res.status(200).json({ messages: ["Post deleted successfully"], data: null, errors: null });
+  res.status(200).json({
+    messages: ["Post deleted successfully"],
+    data: null,
+    errors: null,
+  });
 });
 
 app.listen(3000, () => {

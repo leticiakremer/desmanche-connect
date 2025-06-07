@@ -21,16 +21,6 @@ export const createPostValidationSchema = checkSchema({
     },
 });
 
-export const searchPostsValidationSchema = checkSchema({
-    search: {
-        in: ["query"],
-        isString: true,
-       // notEmpty: true,
-        optional: true,
-        errorMessage: 'O campo de busca deve ser informado',
-    },
-});
-
 export const deletePostValidationSchema = checkSchema({
     id: {
         in: ['params'],
@@ -39,4 +29,3 @@ export const deletePostValidationSchema = checkSchema({
         errorMessage: 'ID inválido',
     }
 })
-
