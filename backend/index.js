@@ -8,34 +8,11 @@ import {
 } from "./validations/postValidations.js";
 import cors from "cors";
 
+import PostSchema from "./schemas/PostSchema.js";
+
 await mongoose.connect(
   "mongodb+srv://leticiakremer24:kHEIdImPi76CPpsu@clusterpds.ofiwoyd.mongodb.net/pds?retryWrites=true&w=majority&appName=ClusterPDS"
 );
-
-const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
-
-const PostSchema = new Schema({
-  title: String,
-  description: String,
-  category: String,
-  active: Boolean,
-  images: [String],
-  coverImage: Number,
-  price: Number,
-});
-
-PostSchema.virtual("id").get(function () {
-  return this._id.toString();
-});
-
-PostSchema.set("toJSON", {
-  virtuals: true,
-  versionKey: false,
-  transform: function (doc, ret) {
-    delete ret._id;
-  },
-});
 
 const PostModel = mongoose.model("Post", PostSchema);
 
