@@ -1,48 +1,51 @@
 import express from "express";
 import { validationResult } from "express-validator";
-import {
-  createPostValidationSchema,
-  deletePostValidationSchema,
-} from "../validations/postValidations.js";
-import PostModel from "../models/PostModel.js";
+import { PostValidations } from "../validations/index.js";
+import { PostModel } from "../models/index.js";
 
 const router = express.Router();
 
-router.post("/v1/posts", createPostValidationSchema, async (req, res) => {
-  let result = validationResult(req);
-  if (!result.isEmpty()) {
-    return res.status(400).json({
-      messages: ["Failed to create post due to validation errors"],
-      data: null,
-      errors: result.array(),
+router.post(
+  "/v1/posts",
+  PostValidations.createPostValidationSchema,
+  async (req, res) => {
+    let result = validationResult(req);
+    if (!result.isEmpty()) {
+      return res.status(400).json({
+        messages: ["Failed to create post due to validation errors"],
+        data: null,
+        errors: result.array(),
+      });
+    }
+
+    const { title, description, category, active, images, coverImage, price } =
+      req.body;
+
+    let post = new PostModel({
+      title,
+      description,
+      category,
+      active,
+      images,
+      coverImage,
+      price,
+    });
+    await post.save();
+    //TODO: Criar a postagem no instagram e facebook
+
+    res.status(200).json({
+      messages: ["Post created successfully"],
+      data: post,
+      errors: null,
     });
   }
-
-  const { title, description, category, active, images, coverImage, price } =
-    req.body;
-
-  let post = new PostModel({
-    title,
-    description,
-    category,
-    active,
-    images,
-    coverImage,
-    price,
-  });
-  await post.save();
-  //TODO: Criar a postagem no instagram e facebook
-
-  res.status(200).json({
-    messages: ["Post created successfully"],
-    data: post,
-    errors: null,
-  });
-});
+);
 
 router.get("/v1/posts", async (req, res) => {
   const { search, take, skip } = req.query;
   const searchString = search ? search.toString() : "";
+  const takeNumber = Number.parseInt(take?.toString() ?? "10");
+  const skipNumber = Number.parseInt(skip?.toString() ?? "0");
   const posts = await PostModel.find({
     $or: [
       { title: { $regex: searchString, $options: "i" } },
@@ -51,8 +54,8 @@ router.get("/v1/posts", async (req, res) => {
     ],
   })
     .sort({ createdAt: -1 })
-    .limit(take ?? 10)
-    .skip(skip ?? 0);
+    .limit(takeNumber)
+    .skip(skipNumber);
 
   const totalCount = await PostModel.countDocuments({
     $or: [
@@ -90,23 +93,27 @@ router.get("/v1/posts/:id", async (req, res) => {
   });
 });
 
-router.delete("/v1/posts/:id", deletePostValidationSchema, async (req, res) => {
-  let result = validationResult(req);
-  if (!result.isEmpty()) {
-    return res.status(400).json({
-      messages: ["Failed to delete post due to validation errors"],
+router.delete(
+  "/v1/posts/:id",
+  PostValidations.deletePostValidationSchema,
+  async (req, res) => {
+    let result = validationResult(req);
+    if (!result.isEmpty()) {
+      return res.status(400).json({
+        messages: ["Failed to delete post due to validation errors"],
+        data: null,
+        errors: result.array(),
+      });
+    }
+
+    const { id } = req.params;
+    await PostModel.deleteOne({ _id: id });
+    res.status(200).json({
+      messages: ["Post deleted successfully"],
       data: null,
-      errors: result.array(),
+      errors: null,
     });
   }
-
-  const { id } = req.params;
-  await PostModel.deleteOne({ _id: id });
-  res.status(200).json({
-    messages: ["Post deleted successfully"],
-    data: null,
-    errors: null,
-  });
-});
+);
 
 export default router;

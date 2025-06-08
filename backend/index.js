@@ -3,7 +3,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import PostRoutes from "./routes/PostRoutes.js";
+import { UserRoutes, PostRoutes } from "./routes/index.js";
 
 dotenv.config({ override: true });
 
@@ -19,6 +19,7 @@ app.use(
 );
 
 app.use(bodyParser.json());
+app.use(UserRoutes);
 app.use(PostRoutes);
 
 app.listen(process.env.PORT, () => {

@@ -1,6 +1,6 @@
 import { checkSchema } from "express-validator";
 
-export const createPostValidationSchema = checkSchema({
+const createPostValidationSchema = checkSchema({
   title: {
     in: ["body"],
     isString: true,
@@ -21,7 +21,7 @@ export const createPostValidationSchema = checkSchema({
   },
 });
 
-export const deletePostValidationSchema = checkSchema({
+const deletePostValidationSchema = checkSchema({
   id: {
     in: ["params"],
     isMongoId: true,
@@ -29,3 +29,8 @@ export const deletePostValidationSchema = checkSchema({
     errorMessage: "ID inválido",
   },
 });
+
+export default {
+  createPostValidationSchema,
+  deletePostValidationSchema,
+};
