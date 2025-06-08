@@ -1,22 +1,19 @@
-class ApiResponseModel<T> {
-  final String? message;
-  final int? statusCode;
-  final T? data;
+class ApiResponseModel {
+  final List<String>? messages;
+  final dynamic data;
+  final Map<String, dynamic>? errors;
 
   ApiResponseModel({
-    this.message,
-    this.statusCode,
+    this.messages,
     this.data,
+    this.errors,
   });
 
-  factory ApiResponseModel.fromJson(
-    Map<String, dynamic> json,
-    T Function(Map<String, dynamic>) fromJsonT,
-  ) {
-    return ApiResponseModel<T>(
-      message: json['message'] as String?,
-      statusCode: json['statusCode'] as int?,
-      data: json['data'] != null ? fromJsonT(json['data']) : null,
+  factory ApiResponseModel.fromJson(Map<String, dynamic> json) {
+    return ApiResponseModel(
+      messages: (json['messages'] as List?)?.map((e) => e.toString()).toList(),
+      data: json['data'],
+      errors: json['errors'] as Map<String, dynamic>?,
     );
   }
 }

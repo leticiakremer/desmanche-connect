@@ -10,19 +10,15 @@ class PostService {
     var url = Uri.parse('http://localhost:3000/v1/posts?search=');
     var response = await http.get(url);
     var parsedBody = jsonDecode(response.body);
-
-    var apiResponse = ApiResponseModel<PaginatedDataModel<PostModel>>.fromJson(
-      parsedBody,
-      (json) => PaginatedDataModel<PostModel>.fromJson(
-        json,
-        (item) => PostModel.fromJson(item),
-      ),
-    );
-
+    var apiResponse = ApiResponseModel.fromJson(parsedBody);
     if (apiResponse.data == null) {
       throw Exception('Failed to load posts');
     }
+    var paginatedData = PaginatedDataModel<PostModel>.fromJson(
+      apiResponse.data!,
+      (json) => PostModel.fromJson(json),
+    );
 
-    return apiResponse.data!;
+    return paginatedData;
   }
 }

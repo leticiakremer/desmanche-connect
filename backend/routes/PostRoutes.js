@@ -60,7 +60,7 @@ router.get("/v1/posts", async (req, res) => {
   let response = {
     data: {
       items: posts,
-      total: totalCount,
+      totalCount,
     },
     messages: ["Posts retrieved successfully"],
   };

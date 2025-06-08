@@ -8,7 +8,9 @@ class PaginatedDataModel<T> {
   });
 
   factory PaginatedDataModel.fromJson(
-      Map<String, dynamic> json, T Function(Map<String, dynamic>) fromJsonT) {
+    Map<String, dynamic> json,
+    T Function(Map<String, dynamic>) fromJsonT,
+  ) {
     return PaginatedDataModel<T>(
       items: (json['items'] as List)
           .map((item) => fromJsonT(item as Map<String, dynamic>))

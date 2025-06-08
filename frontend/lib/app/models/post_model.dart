@@ -1,4 +1,5 @@
 class PostModel {
+  final String? id;
   final String title;
   final String description;
   final String category;
@@ -8,7 +9,8 @@ class PostModel {
   final double price;
 
   PostModel(
-      {required this.title,
+      {this.id,
+      required this.title,
       required this.description,
       required this.category,
       required this.active,
@@ -18,18 +20,20 @@ class PostModel {
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
+      id: json['id'],
       title: json['title'],
       description: json['description'],
       category: json['category'],
-      active: json['active'],
+      active: json['active'] as bool,
       images: List<String>.from(json['images']),
-      coverImage: json['coverImage'],
+      coverImage: json['coverImage'] as int,
       price: json['price'].toDouble(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'title': title,
       'description': description,
       'category': category,

@@ -25,9 +25,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getAllPosts() async {
-    final allPosts = await PostService.getAllPosts();
+    final postsPaginated = await PostService.getAllPosts();
     setState(() {
-     posts = allPosts;
+      posts = postsPaginated.items;
     });
   }
 
@@ -218,14 +218,17 @@ class _HomePageState extends State<HomePage> {
                           elevation: 2,
                         ),
                         onPressed: () {
-                            Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const CreatePostPage(),
                             ),
                           );
                         },
-                        icon: const Icon(Icons.add, color: Colors.white,),
+                        icon: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
                         label: const Text("Criar Post"),
                       ),
                     ],
