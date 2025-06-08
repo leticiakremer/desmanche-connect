@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 String selectedItem = '';
 
 class _HomePageState extends State<HomePage> {
+  PostService postService = PostService();
   List<PostModel> posts = [];
 
   @override
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getAllPosts() async {
-    final postsPaginated = await PostService.getAllPosts();
+    final postsPaginated = await postService.getAllPosts();
     setState(() {
       posts = postsPaginated.items;
     });
