@@ -9,9 +9,12 @@ const registerUserValidationSchema = checkSchema({
   },
   username: {
     in: ["body"],
-    isEmail: true,
+    isLength: {
+      options: { min: 6 },
+      errorMessage: "A username deve conter pelo menos 3 caracteres",
+    },
     notEmpty: true,
-    errorMessage: "O e-mail é obrigatório e deve ser válido",
+    errorMessage: "O username é obrigatório e deve ser válido",
   },
   password: {
     in: ["body"],
@@ -28,9 +31,8 @@ const registerUserValidationSchema = checkSchema({
 const loginUserValidationSchema = checkSchema({
   username: {
     in: ["body"],
-    isEmail: true,
     notEmpty: true,
-    errorMessage: "O e-mail é obrigatório e deve ser válido",
+    errorMessage: "O username é obrigatório e deve ser válido",
   },
   password: {
     in: ["body"],
