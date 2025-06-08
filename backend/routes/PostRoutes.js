@@ -2,22 +2,15 @@ import express from "express";
 import { validationResult } from "express-validator";
 import { PostValidations } from "../validations/index.js";
 import { PostModel } from "../models/index.js";
+import { HandleValidation } from "../middlewares/index.js";
 
 const router = express.Router();
 
 router.post(
   "/v1/posts",
   PostValidations.createPostValidationSchema,
+  HandleValidation,
   async (req, res) => {
-    let result = validationResult(req);
-    if (!result.isEmpty()) {
-      return res.status(400).json({
-        messages: ["Failed to create post due to validation errors"],
-        data: null,
-        errors: result.array(),
-      });
-    }
-
     const { title, description, category, active, images, coverImage, price } =
       req.body;
 
@@ -96,16 +89,8 @@ router.get("/v1/posts/:id", async (req, res) => {
 router.delete(
   "/v1/posts/:id",
   PostValidations.deletePostValidationSchema,
+  HandleValidation,
   async (req, res) => {
-    let result = validationResult(req);
-    if (!result.isEmpty()) {
-      return res.status(400).json({
-        messages: ["Failed to delete post due to validation errors"],
-        data: null,
-        errors: result.array(),
-      });
-    }
-
     const { id } = req.params;
     await PostModel.deleteOne({ _id: id });
     res.status(200).json({
