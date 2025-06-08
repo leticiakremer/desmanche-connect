@@ -1,7 +1,6 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
 
-const Schema = mongoose.Schema;
-const PostSchema = new Schema({
+const postSchema = new Schema({
   title: String,
   description: String,
   category: String,
@@ -11,11 +10,11 @@ const PostSchema = new Schema({
   price: Number,
 });
 
-PostSchema.virtual("id").get(function () {
+postSchema.virtual("id").get(function () {
   return this._id.toString();
 });
 
-PostSchema.set("toJSON", {
+postSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret) {
@@ -23,4 +22,4 @@ PostSchema.set("toJSON", {
   },
 });
 
-export default PostSchema;
+export default model("Post", postSchema);
