@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:pds_front/app/models/post_model.dart';
 import 'package:pds_front/app/pages/about_screen.dart';
+import 'package:pds_front/app/pages/admin_login_screen.dart';
 import 'package:pds_front/app/pages/help_screen.dart';
 import 'package:pds_front/app/pages/posts/post_create_screen.dart';
 import 'package:pds_front/app/services/posts_service.dart';
@@ -130,7 +131,6 @@ class _HomePageState extends State<HomePage> {
               children: [
                 buildDrawerItem("Sobre nós", Icons.info_outline),
                 buildDrawerItem("Postagens", Icons.article),
-                buildDrawerItem("Promoções", Icons.local_offer),
                 buildDrawerItem("Ajuda", Icons.help_outline),
               ],
             ),
@@ -166,6 +166,12 @@ class _HomePageState extends State<HomePage> {
             ),
             onTap: () {
               debugPrint("Usuário clicou em sair.");
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AdminLoginScreen()),
+                (route) => false,
+              );
             },
           ),
           const SizedBox(height: 12),
@@ -218,14 +224,19 @@ class _HomePageState extends State<HomePage> {
                           ),
                           elevation: 2,
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const CreatePostPage(),
-                            ),
-                          );
-                        },
+                    onPressed: () async {
+  final result = await Navigator.push<bool>(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const CreatePostPage(),
+    ),
+  );
+
+  if (result == true) {
+    getAllPosts();
+  }
+},
+
                         icon: const Icon(
                           Icons.add,
                           color: Colors.white,

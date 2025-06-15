@@ -1,6 +1,6 @@
-class ApiResponseModel {
+class ApiResponseModel<T> {
   final List<String>? messages;
-  final dynamic data;
+  final T? data;
   final Map<String, dynamic>? errors;
 
   ApiResponseModel({
@@ -9,10 +9,10 @@ class ApiResponseModel {
     this.errors,
   });
 
-  factory ApiResponseModel.fromJson(Map<String, dynamic> json) {
+  factory ApiResponseModel.fromJson(Map<String, dynamic> json, T Function(Map<String, dynamic>) fromJsonT) {
     return ApiResponseModel(
       messages: (json['messages'] as List?)?.map((e) => e.toString()).toList(),
-      data: json['data'],
+      data: json['data'] != null ? fromJsonT(json['data']) : null,
       errors: json['errors'] as Map<String, dynamic>?,
     );
   }

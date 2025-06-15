@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pds_front/app/pages/admin_login_screen.dart';
 import 'package:pds_front/app/pages/home_page.dart';
 
 void main() {
@@ -10,6 +11,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePage());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: AdminLoginScreen());
   }
 }

@@ -49,7 +49,7 @@ router.post(
     try {
       const user = await UserModel.findOne({ username });
       if (!user || !(await user.matchPassword(password))) {
-        return res.status(401).json({
+        return res.status(400).json({
           messages: ["Invalid credentials"],
           data: null,
           errors: null,

@@ -26,8 +26,6 @@ class _CreatePostPageState extends State<CreatePostPage> {
     'Motos',
     'Caminhões',
     'Utilitários',
-    'SUVs',
-    'Vans',
     'Peças Diversas',
   ];
 
