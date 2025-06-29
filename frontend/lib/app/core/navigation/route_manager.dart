@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pds_front/app/pages/dashboard/posts/post_details_page.dart';
+import 'package:pds_front/app/pages/dashboard/users/users_page.dart';
 import 'package:pds_front/app/services/user_service.dart';
 import 'package:pds_front/app/widgets/drawer/drawer_menu_item.dart';
 import 'package:pds_front/app/pages/public/about_screen.dart';
@@ -59,9 +60,9 @@ class RouteManager {
                         icon: Icons.article,
                         route: RouteManager.postsList),
                     DrawerMenuItem(
-                        title: "Teste admin",
+                        title: "Usuários",
                         icon: Icons.textsms_sharp,
-                        route: "/admin/teste"),
+                        route: "/admin/users"),
                   ],
                 ),
                 Expanded(child: child),
@@ -71,9 +72,9 @@ class RouteManager {
         ),
         routes: [
           GoRoute(
-            path: "/admin/teste",
+            path: "/admin/users",
             pageBuilder: (context, state) =>
-                NoTransitionPage(child: const Placeholder()),
+                NoTransitionPage(child: const UsersPage()),
           ),
           GoRoute(
             path: postsList,
