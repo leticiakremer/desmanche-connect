@@ -238,7 +238,7 @@ router.get("/v1/posts", async (req, res) => {
       { description: { $regex: searchString, $options: "i" } },
     ],
   })
-    .sort({ createdAt: -1 })
+    .sort({ title: 1 })
     .limit(takeNumber)
     .skip(skipNumber);
 
