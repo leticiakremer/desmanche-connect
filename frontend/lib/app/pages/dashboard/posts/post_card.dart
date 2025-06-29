@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pds_front/app/models/post_model.dart';
 import 'package:pds_front/app/core/navigation/route_manager.dart';
 
@@ -16,11 +17,7 @@ class PostCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(
-            context,
-            RouteManager.postCardDetails,
-            arguments: post,
-          );
+          context.go(RouteManager.postDetails.replaceAll(":id", post.id!));
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,

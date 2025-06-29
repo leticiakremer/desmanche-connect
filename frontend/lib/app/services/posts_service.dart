@@ -8,13 +8,13 @@ import 'package:pds_front/app/models/post_model.dart';
 import 'package:pds_front/app/services/user_service.dart';
 import 'package:http_parser/http_parser.dart';
 
-
 class PostService {
-  Future<PaginatedDataModel<PostModel>> getAllPosts(int take, int skip) async {
+  Future<PaginatedDataModel<PostModel>> getAllPosts(
+      int take, int skip, String? search) async {
     var loginResponseModel = await UserService.getUserData();
 
     var url = Uri.parse(
-        'http://localhost:3000/v1/posts?search=&take=$take&skip=$skip');
+        'http://localhost:3000/v1/posts?search=$search&take=$take&skip=$skip');
     var response = await http.get(url,
         headers: {'Authorization': 'Bearer ${loginResponseModel.accessToken}'});
 
@@ -100,5 +100,36 @@ class PostService {
     if (response.statusCode != 200) {
       throw Exception('Falha ao deletar o post');
     }
+  }
+
+  Future<PostModel> getPostById(String postId) async {
+    final loginResponseModel = await UserService.getUserData();
+
+    final url = Uri.parse('http://localhost:3000/v1/posts/$postId');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer ${loginResponseModel.accessToken}',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Erro ao buscar post: ${response.statusCode}');
+    }
+
+    final parsedBody = jsonDecode(response.body);
+
+    final apiResponse = ApiResponseModel.fromJson(
+      parsedBody,
+      (json) => PostModel.fromJson(json),
+    );
+
+    if (apiResponse.data == null) {
+      throw Exception('Post não encontrado');
+    }
+
+    return apiResponse.data!;
   }
 }

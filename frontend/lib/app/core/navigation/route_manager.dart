@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pds_front/app/pages/dashboard/posts/post_details_page.dart';
 import 'package:pds_front/app/services/user_service.dart';
 import 'package:pds_front/app/widgets/drawer/drawer_menu_item.dart';
 import 'package:pds_front/app/pages/public/about_screen.dart';
@@ -15,6 +16,7 @@ class RouteManager {
   static const String dashboardPage = '/admin';
   static const String createPost = '/admin/posts/create';
   static const String postsList = '/admin/posts';
+  static const String postDetails = '/admin/posts/:id';
 
   static const String adminLogin = '/admin/login';
 
@@ -23,7 +25,7 @@ class RouteManager {
   static const String about = '/about';
   static const String help = '/help';
 
-  static const String postCardDetails = '/postCardDetails'; // Corrigido aqui
+  static const String postCardDetails = '/postCardDetails';
 
   static GoRouter router = GoRouter(
     initialLocation: homePublic,
@@ -45,62 +47,75 @@ class RouteManager {
     routes: [
       //Dashboard routes
       ShellRoute(
-          builder: (context, state, child) {
-            return Scaffold(
-              backgroundColor: const Color(0xFF171821),
-              body: Row(
-                children: [
-                  DrawerWidget(
-                    menuItems: [
-                      DrawerMenuItem(
-                          title: "Postagens",
-                          icon: Icons.article,
-                          route: RouteManager.postsList),
-                      DrawerMenuItem(
-                          title: "Teste admin",
-                          icon: Icons.textsms_sharp,
-                          route: "/admin/teste"),
-                    ],
-                  ),
-                  Expanded(
-                    child: child,
-                  ),
-                ],
+        pageBuilder: (context, state, child) => NoTransitionPage(
+          child: Scaffold(
+            backgroundColor: const Color(0xFF171821),
+            body: Row(
+              children: [
+                DrawerWidget(
+                  menuItems: [
+                    DrawerMenuItem(
+                        title: "Postagens",
+                        icon: Icons.article,
+                        route: RouteManager.postsList),
+                    DrawerMenuItem(
+                        title: "Teste admin",
+                        icon: Icons.textsms_sharp,
+                        route: "/admin/teste"),
+                  ],
+                ),
+                Expanded(child: child),
+              ],
+            ),
+          ),
+        ),
+        routes: [
+          GoRoute(
+            path: "/admin/teste",
+            pageBuilder: (context, state) =>
+                NoTransitionPage(child: const Placeholder()),
+          ),
+          GoRoute(
+            path: postsList,
+            pageBuilder: (context, state) =>
+                NoTransitionPage(child: const PostsPage()),
+          ),
+          GoRoute(
+            path: createPost,
+            pageBuilder: (context, state) =>
+                NoTransitionPage(child: const CreatePostPage()),
+          ),
+          GoRoute(
+            path: postDetails,
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: PostDetailsPage(
+                postId: state.pathParameters['id']!,
               ),
-            );
-          },
-          routes: [
-            GoRoute(
-                path: "/admin/teste",
-                builder: (context, state) {
-                  return Placeholder();
-                }),
-            GoRoute(
-              path: postsList,
-              builder: (context, state) => PostsPage(),
             ),
-            GoRoute(
-              path: createPost,
-              builder: (context, state) => CreatePostPage(),
-            ),
-          ]),
-      GoRoute(
-        path: adminLogin,
-        builder: (context, state) => AdminLoginScreen(),
+          ),
+        ],
       ),
 
-      //Public routes
+      GoRoute(
+        path: adminLogin,
+        pageBuilder: (context, state) =>
+            NoTransitionPage(child: const AdminLoginScreen()),
+      ),
+
       GoRoute(
         path: homePublic,
-        builder: (context, state) => PublicHomePage(),
+        pageBuilder: (context, state) =>
+            NoTransitionPage(child: const PublicHomePage()),
       ),
       GoRoute(
         path: about,
-        builder: (context, state) => AboutUsScreen(),
+        pageBuilder: (context, state) =>
+            NoTransitionPage(child: const AboutUsScreen()),
       ),
       GoRoute(
         path: help,
-        builder: (context, state) => HelpScreen(),
+        pageBuilder: (context, state) =>
+            NoTransitionPage(child: const HelpScreen()),
       ),
     ],
   );
