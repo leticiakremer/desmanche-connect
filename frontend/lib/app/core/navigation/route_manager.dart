@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pds_front/app/services/user_service.dart';
 import 'package:pds_front/app/widgets/drawer/drawer_menu_item.dart';
-import 'package:pds_front/app/models/post_model.dart';
-import 'package:pds_front/app/pages/dashboard/dashboard_page.dart';
 import 'package:pds_front/app/pages/public/about_screen.dart';
 import 'package:pds_front/app/pages/public/help_screen.dart';
-import 'package:pds_front/app/pages/dashboard/posts/post_card_details.screen.dart';
 import 'package:pds_front/app/pages/dashboard/posts/post_create_page.dart';
 import 'package:pds_front/app/pages/public/public_home_page.dart';
-import 'package:pds_front/app/pages/splash/splash_screen.dart';
 import 'package:pds_front/app/pages/login/admin_login_screen.dart';
 import 'package:pds_front/app/pages/dashboard/posts/posts_page.dart';
 
@@ -47,6 +43,7 @@ class RouteManager {
       return null;
     },
     routes: [
+      //Dashboard routes
       ShellRoute(
           builder: (context, state, child) {
             return Scaffold(
