@@ -1,9 +1,12 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:pds_front/app/core/navigation/route_manager.dart';
+import 'package:pds_front/app/models/create_post_model.dart';
 import 'package:pds_front/app/services/posts_service.dart';
-import 'package:pds_front/app/models/post_model.dart';
 import 'package:pds_front/app/widgets/header_widget.dart';
 
 class CreatePostPage extends StatefulWidget {
@@ -21,7 +24,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
 
   String? _selectedCategory;
   bool _isActive = false;
-  XFile? _coverImage;
+  int _coverImage = 0;
   List<XFile> _images = [];
   bool _isLoading = false;
 
@@ -40,17 +43,12 @@ class _CreatePostPageState extends State<CreatePostPage> {
 
   final picker = ImagePicker();
 
-  Future<void> _pickCoverImage() async {
-    final picked = await picker.pickImage(source: ImageSource.gallery);
-    if (picked != null) {
-      setState(() => _coverImage = picked);
-    }
-  }
-
   Future<void> _pickImages() async {
     final picked = await picker.pickMultiImage();
     if (picked.isNotEmpty) {
-      setState(() => _images = picked);
+      setState(() {
+        _images = picked;
+      });
     }
   }
 
@@ -62,7 +60,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
     setState(() {
       _selectedCategory = null;
       _isActive = false;
-      _coverImage = null;
+      _coverImage = 0;
       _images = [];
     });
   }
@@ -75,13 +73,13 @@ class _CreatePostPageState extends State<CreatePostPage> {
         final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: '');
         final price = formatter.parse(_priceController.text);
 
-        final post = PostModel(
+        final post = CreatePostModel(
           title: _titleController.text.trim(),
           description: _descriptionController.text.trim(),
           category: _selectedCategory!,
           active: _isActive,
-          images: _images.map((x) => x.path).toList(),
-          coverImage: 0,
+          images: _images, // Agora passa lista XFile
+          coverImage: _coverImage,
           price: price.toDouble(),
         );
 
@@ -92,6 +90,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
             const SnackBar(content: Text('Post criado com sucesso!')),
           );
           _clearForm();
+
+          context.go(RouteManager.postsList);
         }
       } catch (e, stackTrace) {
         print('Erro ao criar post: $e');
@@ -181,36 +181,65 @@ class _CreatePostPageState extends State<CreatePostPage> {
                           ),
                           const SizedBox(height: 16),
                           _buildImageUploadButton(
-                            label: 'Selecionar Imagem de Capa',
-                            onPressed: _pickCoverImage,
-                            selected: _coverImage != null,
-                          ),
-                          const SizedBox(height: 8),
-                          if (_coverImage != null)
-                            Text(
-                              _coverImage!.name,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          const SizedBox(height: 16),
-                          _buildImageUploadButton(
                             label: 'Selecionar Imagens',
                             onPressed: _pickImages,
                             selected: _images.isNotEmpty,
                           ),
-                          const SizedBox(height: 8),
-                          if (_images.isNotEmpty)
+                          if (_images.isNotEmpty) ...[
+                            const SizedBox(height: 16),
                             Wrap(
                               spacing: 8,
-                              children: _images
-                                  .map((img) => Chip(
-                                        label: Text(img.name),
-                                        backgroundColor:
-                                            customColor.withOpacity(0.3),
-                                        labelStyle: const TextStyle(
-                                            color: Colors.black),
-                                      ))
-                                  .toList(),
+                              runSpacing: 8,
+                              children: _images.asMap().entries.map((entry) {
+                                final index = entry.key;
+                                final image = entry.value;
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _coverImage = index;
+                                    });
+                                  },
+                                  child: FutureBuilder<Uint8List>(
+                                    future: image.readAsBytes(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                              ConnectionState.done &&
+                                          snapshot.hasData) {
+                                        return Container(
+                                          width: 100,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: _coverImage == index
+                                                ? Border.all(
+                                                    color: Colors.red,
+                                                    width: 3,
+                                                  )
+                                                : null,
+                                            image: DecorationImage(
+                                              image:
+                                                  MemoryImage(snapshot.data!),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        return Container(
+                                          width: 100,
+                                          height: 100,
+                                          color: Colors.grey[300],
+                                          child: const Center(
+                                              child:
+                                                  CircularProgressIndicator()),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                );
+                              }).toList(),
                             ),
+                          ],
                           const SizedBox(height: 32),
                           ElevatedButton(
                             onPressed: _isLoading ? null : _submit,

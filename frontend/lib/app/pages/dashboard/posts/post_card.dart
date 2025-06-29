@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:pds_front/app/models/post_model.dart';
 import 'package:pds_front/app/core/navigation/route_manager.dart';
@@ -11,13 +9,6 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Uint8List? imageBytes;
-    if (post.images.isNotEmpty) {
-      try {
-        imageBytes = base64Decode(post.images[post.coverImage]);
-      } catch (_) {}
-    }
-
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 3,
@@ -35,19 +26,22 @@ class PostCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            imageBytes != null
-                ? Image.memory(
-                    imageBytes,
-                    height: 180,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  )
-                : Container(
-                    height: 180,
-                    width: double.infinity,
-                    color: Colors.grey[300],
-                    child: const Center(child: Text("Imagem indisponível")),
-                  ),
+            // Configurar em um único lugar a url do servidor web
+            Image.network(
+              "http://localhost:3000/v1/posts/images/${post.images[post.coverImage]}",
+              height: 180,
+              width: double.infinity,
+              loadingBuilder: (context, child, progress) {
+                if (progress == null) return child;
+                return const Center(child: CircularProgressIndicator());
+              },
+              errorBuilder: (context, error, stackTrace) {
+                print('Erro ao carregar imagem: $error');
+                return const Center(
+                  child: Icon(Icons.broken_image, color: Colors.red, size: 40),
+                );
+              },
+            ),
             Padding(
               padding: const EdgeInsets.all(12),
               child: Column(

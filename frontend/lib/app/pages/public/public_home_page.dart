@@ -11,7 +11,7 @@ class PublicHomePage extends StatefulWidget {
 class _PublicHomePageState extends State<PublicHomePage> {
   void _openWhatsapp() async {
     final Uri url = Uri.parse(
-        "https://wa.me/555195173628?text=Oi,%20tudo%20bem?%20Poderia%20me%20ajudar%20com%20uma%20informa%C3%A7%C3%A3o?");
+        "https://wa.me/5551991231013?text=Oi,%20tudo%20bem?%20Poderia%20me%20ajudar%20com%20uma%20informa%C3%A7%C3%A3o?");
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {

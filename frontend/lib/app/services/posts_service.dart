@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:pds_front/app/models/api_response_model.dart';
+import 'package:pds_front/app/models/create_post_model.dart';
 import 'package:pds_front/app/models/paginated_data_model.dart';
 import 'package:pds_front/app/models/post_model.dart';
 import 'package:pds_front/app/services/user_service.dart';
+import 'package:http_parser/http_parser.dart';
+
 
 class PostService {
   Future<PaginatedDataModel<PostModel>> getAllPosts(int take, int skip) async {
@@ -29,13 +32,53 @@ class PostService {
     return apiResponse.data!;
   }
 
-  Future createPost(PostModel post) async {
-    var url = Uri.parse('http://localhost:3000/v1/posts');
-    var response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(post.toJson()),
-    );
+  Future createPost(CreatePostModel post) async {
+    var loginResponseModel = await UserService.getUserData();
+
+    var uri = Uri.parse('http://localhost:3000/v1/posts');
+    var request = http.MultipartRequest('POST', uri);
+
+    // Adiciona o token no header
+    request.headers['Authorization'] =
+        'Bearer ${loginResponseModel.accessToken}';
+
+    // Serializa os dados do post para JSON e adiciona no campo 'data'
+    final postData = {
+      'title': post.title,
+      'description': post.description,
+      'category': post.category,
+      'active': post.active,
+      'coverImage': post.coverImage,
+      'price': post.price,
+    };
+    request.fields['data'] = jsonEncode(postData);
+
+    // Adiciona as imagens (bytes lidos direto do XFile)
+    for (int i = 0; i < post.images.length; i++) {
+      final file = post.images[i];
+      final bytes = await file.readAsBytes();
+
+      // Extrai mime type da imagem (exemplo: image/jpeg)
+      final mimeTypeString = file.mimeType ?? 'image/jpeg';
+      final mimeTypeSplit = mimeTypeString.split('/');
+
+      request.files.add(
+        http.MultipartFile.fromBytes(
+          'images',
+          bytes,
+          filename: file.name,
+          contentType: MediaType(
+            mimeTypeSplit[0],
+            mimeTypeSplit.length > 1 ? mimeTypeSplit[1] : 'jpeg',
+          ),
+        ),
+      );
+    }
+
+    // Envia a requisição
+    final streamedResponse = await request.send();
+
+    final response = await http.Response.fromStream(streamedResponse);
 
     print('Status: ${response.statusCode}');
     print('Body: ${response.body}');

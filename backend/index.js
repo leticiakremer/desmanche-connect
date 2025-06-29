@@ -18,7 +18,7 @@ app.use(
   })
 );
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: "100mb"}));
 app.use(UserRoutes);
 app.use(PostRoutes);
 
