@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pds_front/app/models/login_request_model.dart';
 import 'package:pds_front/app/services/user_service.dart';
+import 'package:pds_front/app/core/navigation/route_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'home_page.dart';
+
 class AdminLoginScreen extends StatefulWidget {
   const AdminLoginScreen({super.key});
 
@@ -13,8 +15,10 @@ class AdminLoginScreen extends StatefulWidget {
 }
 
 class _AdminLoginScreenState extends State<AdminLoginScreen> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController =
+      TextEditingController(text: "usertester");
+  final TextEditingController _passwordController =
+      TextEditingController(text: "123456");
   final UserService _userService = UserService();
   final _formKey = GlobalKey<FormState>();
 
@@ -33,7 +37,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
     }
   }
 
-    @override
+  @override
   void initState() {
     super.initState();
     _usernameController.addListener(_clearError);
@@ -44,11 +48,10 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   void dispose() {
     _usernameController.removeListener(_clearError);
     _passwordController.removeListener(_clearError);
-    _usernameController.dispose(); 
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
-
 
   Future _handleLogin() async {
     if (_formKey.currentState!.validate()) {
@@ -57,15 +60,13 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
           password: _passwordController.text));
       final storage = await SharedPreferences.getInstance();
       if (loginResponse.data != null) {
+        await storage.setString("UserName", _usernameController.text);
+
         storage.setString(
             "AccountData", jsonEncode(loginResponse.data!.toJson()));
-
-        if (context.mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => const HomePage()),
-          );
-        }
+        return Router.neglect(context, () {
+          return context.go(RouteManager.postsList);
+        });
       } else {
         //TODO: Mostrar na tela que n"ao foi poss
         setState(() {
@@ -103,7 +104,6 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 32),
-
                     TextFormField(
                       controller: _usernameController,
                       style: const TextStyle(color: Colors.white),
@@ -130,7 +130,6 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                       },
                     ),
                     const SizedBox(height: 20),
-
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
@@ -167,6 +166,9 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                         if (value == null || value.isEmpty) {
                           return 'Digite a senha';
                         }
+                        if (value.length < 6) {
+                          return 'A senha deve conter pelo menos 6 caracteres';
+                        }
                         return null;
                       },
                     ),
@@ -179,7 +181,6 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                       ),
                     ],
                     SizedBox(height: 30),
-
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
