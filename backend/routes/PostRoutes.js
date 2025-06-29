@@ -238,6 +238,7 @@ router.get("/v1/posts", async (req, res) => {
       { description: { $regex: searchString, $options: "i" } },
     ],
   })
+    .select("+createdAt +updatedAt")
     .sort({ title: 1 })
     .limit(takeNumber)
     .skip(skipNumber);
@@ -313,7 +314,7 @@ router.get("/v1/posts/images/:id", async (req, res) => {
  */
 router.get("/v1/posts/:id", async (req, res) => {
   const { id } = req.params;
-  const post = await PostModel.findById(id);
+  const post = await PostModel.findById(id).select("+createdAt +updatedAt");
   if (post === null) {
     return res.status(404).json({
       messages: ["Post not found"],

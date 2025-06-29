@@ -49,6 +49,7 @@ router.get("/v1/users", Authorize, async (req, res) => {
     };
 
     const users = await UserModel.find(query, { password: 0 })
+      .select("+createdAt +updatedAt")
       .sort({ name: 1 })
       .limit(takeNumber)
       .skip(skipNumber);
