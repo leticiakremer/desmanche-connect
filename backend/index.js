@@ -2,14 +2,21 @@ import mongoose from "mongoose";
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import dotenv from "dotenv";
+import { setupSwagger } from "./swagger.js";
+
+
 import { UserRoutes, PostRoutes } from "./routes/index.js";
+import {
+  MONGO_CONNECTION_STRING,
+  PORT,
+} from "./env.js";
 
-dotenv.config({ override: true });
+// Conecta ao MongoDB
+await mongoose.connect(MONGO_CONNECTION_STRING);
 
-await mongoose.connect(process.env.MONGO_CONNECTION_STRING);
-
+// Inicializa o app
 const app = express();
+
 app.use(
   cors({
     origin: "*",
@@ -18,10 +25,15 @@ app.use(
   })
 );
 
-app.use(bodyParser.json({limit: "100mb"}));
+app.use(bodyParser.json({ limit: "100mb" }));
+
+// Rotas
 app.use(UserRoutes);
 app.use(PostRoutes);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+setupSwagger(app);
+
+// Inicializa o servidor
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
 });

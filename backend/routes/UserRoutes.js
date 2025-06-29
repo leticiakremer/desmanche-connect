@@ -2,12 +2,158 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/index.js";
 import { UserValidations } from "../validations/index.js";
-import { HandleValidation } from "../middlewares/index.js";
+import { HandleValidation, Authenticate } from "../middlewares/index.js";
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /v1/users:
+ *   get:
+ *     summary: Get a list of users
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search keyword for name or username
+ *       - in: query
+ *         name: take
+ *         schema:
+ *           type: integer
+ *         description: Number of records to return
+ *       - in: query
+ *         name: skip
+ *         schema:
+ *           type: integer
+ *         description: Number of records to skip
+ *     responses:
+ *       200:
+ *         description: List of users
+ */
+router.get("/v1/users", Authenticate, async (req, res) => {
+  try {
+    const { search, take, skip } = req.query;
+    const searchString = search ? search.toString() : "";
+    const takeNumber = Number.parseInt(take?.toString() ?? "10");
+    const skipNumber = Number.parseInt(skip?.toString() ?? "0");
+
+    const query = {
+      $or: [
+        { name: { $regex: searchString, $options: "i" } },
+        { username: { $regex: searchString, $options: "i" } },
+      ],
+    };
+
+    const users = await UserModel.find(query, { password: 0 })
+      .sort({ createdAt: -1 })
+      .limit(takeNumber)
+      .skip(skipNumber);
+
+    const totalCount = await UserModel.countDocuments(query);
+
+    return res.status(200).json({
+      messages: ["Users retrieved successfully"],
+      data: {
+        items: users,
+        totalCount,
+      },
+      errors: null,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      messages: ["Failed to retrieve users"],
+      data: null,
+      errors: [err.message],
+    });
+  }
+});
+
+/**
+ * @swagger
+ * /v1/users/{id}:
+ *   get:
+ *     summary: Get user by ID
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User found
+ *       404:
+ *         description: User not found
+ */
+router.get("/v1/users/:id", Authenticate, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await UserModel.findById(id, { password: 0 });
+
+    if (!user) {
+      return res.status(404).json({
+        messages: ["User not found"],
+        data: null,
+        errors: null,
+      });
+    }
+
+    return res.status(200).json({
+      messages: ["User retrieved successfully"],
+      data: user,
+      errors: null,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      messages: ["Failed to retrieve user"],
+      data: null,
+      errors: [err.message],
+    });
+  }
+});
+
+/**
+ * @swagger
+ * /v1/users/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - username
+ *               - password
+ *             properties:
+ *               name:
+ *                 type: string
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: User already exists
+ */
 router.post(
   "/v1/users/register",
+  Authenticate,
   UserValidations.registerUserValidationSchema,
   HandleValidation,
   async (req, res) => {
@@ -39,6 +185,32 @@ router.post(
   }
 );
 
+/**
+ * @swagger
+ * /v1/users/login:
+ *   post:
+ *     summary: Authenticate user and return JWT tokens
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Invalid credentials
+ */
 router.post(
   "/v1/users/login",
   UserValidations.loginUserValidationSchema,
@@ -91,6 +263,31 @@ router.post(
   }
 );
 
+/**
+ * @swagger
+ * /v1/users/refresh:
+ *   post:
+ *     summary: Refresh access token using a refresh token
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - refreshToken
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Token refreshed successfully
+ *       400:
+ *         description: Refresh token is required
+ *       403:
+ *         description: Invalid or expired refresh token
+ */
 router.post("/v1/users/refresh", async (req, res) => {
   const { refreshToken } = req.body;
 

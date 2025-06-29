@@ -28,7 +28,7 @@ const createPostValidationSchema = checkSchema({
         }
 
         // Validação de preço (opcional: se enviado, deve ser número)
-        if (parsed.price && isNaN(Number(parsed.price))) {
+        if (parsed.price != null && parsed.price && isNaN(Number(parsed.price))) {
           throw new Error("O preço deve ser um número válido");
         }
 
