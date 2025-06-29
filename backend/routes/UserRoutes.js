@@ -2,7 +2,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import { UserModel } from "../models/index.js";
 import { UserValidations } from "../validations/index.js";
-import { HandleValidation, Authenticate } from "../middlewares/index.js";
+import { HandleValidation, Authorize } from "../middlewares/index.js";
 
 const router = express.Router();
 
@@ -34,7 +34,7 @@ const router = express.Router();
  *       200:
  *         description: List of users
  */
-router.get("/v1/users", Authenticate, async (req, res) => {
+router.get("/v1/users", Authorize, async (req, res) => {
   try {
     const { search, take, skip } = req.query;
     const searchString = search ? search.toString() : "";
@@ -92,7 +92,7 @@ router.get("/v1/users", Authenticate, async (req, res) => {
  *       404:
  *         description: User not found
  */
-router.get("/v1/users/:id", Authenticate, async (req, res) => {
+router.get("/v1/users/:id", Authorize, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -153,7 +153,7 @@ router.get("/v1/users/:id", Authenticate, async (req, res) => {
  */
 router.post(
   "/v1/users/register",
-  Authenticate,
+  Authorize,
   UserValidations.registerUserValidationSchema,
   HandleValidation,
   async (req, res) => {

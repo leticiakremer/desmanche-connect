@@ -27,7 +27,9 @@ const router = express.Router();
  *                   format: binary
  *               data:
  *                 type: string
- *                 description: JSON string with post data ({ "title": "Post test", "description": "teste", "category": "Carro", "active": true, "coverImage": 0, "price": null })
+ *                 description: >
+ *                   JSON string with post data, example:
+ *                   { "title": "Post test", "description": "teste", "category": "Carro", "active": true, "coverImage": 0, "price": null }
  *     responses:
  *       201:
  *         description: Post created successfully
@@ -44,14 +46,8 @@ router.post(
   HandleValidation,
   async (req, res) => {
     try {
-      const {
-        title,
-        description,
-        category,
-        active,
-        price,
-        coverImage
-      } = JSON.parse(req.body.data);
+      const { title, description, category, active, price, coverImage } =
+        JSON.parse(req.body.data);
       const files = req.files;
 
       if (!files || files.length === 0) {
@@ -92,6 +88,111 @@ router.post(
       console.error(error);
       res.status(500).json({
         messages: ["Failed to create post"],
+        data: null,
+        errors: [error.message],
+      });
+    }
+  }
+);
+
+/**
+ * @swagger
+ * /v1/posts/{id}:
+ *   put:
+ *     summary: Edit a post by ID
+ *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Post ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: binary
+ *               data:
+ *                 type: string
+ *                 description: >
+ *                   JSON string with post data, example:
+ *                   { "title": "Updated title", "description": "Updated desc", "category": "Moto", "active": true, "coverImage": 1, "price": 500 }
+ *     responses:
+ *       200:
+ *         description: Post updated successfully
+ *       404:
+ *         description: Post not found
+ *       500:
+ *         description: Failed to update post
+ */
+router.put(
+  "/v1/posts/:id",
+  Authorize,
+  Upload.array("images"),
+  PostValidations.updatePostValidationSchema,
+  HandleValidation,
+  async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const { title, description, category, active, price, coverImage } =
+        JSON.parse(req.body.data);
+      const files = req.files;
+
+      const post = await PostModel.findById(id);
+      if (!post) {
+        return res.status(404).json({
+          messages: ["Post not found"],
+          data: null,
+          errors: null,
+        });
+      }
+
+      // Remove imagens antigas
+      await ImageModel.deleteMany({ _id: { $in: post.images } });
+
+      // Salva novas imagens
+      const savedImages = await Promise.all(
+        files.map((file) => {
+          const image = new ImageModel({
+            filename: file.originalname,
+            mimetype: file.mimetype,
+            data: file.buffer,
+          });
+          return image.save();
+        })
+      );
+
+      // Atualiza os campos
+      post.title = title;
+      post.description = description;
+      post.category = category;
+      post.active = active;
+      post.price = price;
+      post.coverImage = coverImage;
+      post.images = savedImages.map((img) => img._id);
+
+      await post.save();
+
+      res.status(200).json({
+        messages: ["Post updated successfully"],
+        data: post,
+        errors: null,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        messages: ["Failed to update post"],
         data: null,
         errors: [error.message],
       });
