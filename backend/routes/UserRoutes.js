@@ -189,7 +189,7 @@ router.post(
  * @swagger
  * /v1/users/login:
  *   post:
- *     summary: Authenticate user and return JWT tokens
+ *     summary: Authenticate user and return JWT tokens and user data
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -208,8 +208,51 @@ router.post(
  *     responses:
  *       200:
  *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 messages:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     accessToken:
+ *                       type: string
+ *                     refreshToken:
+ *                       type: string
+ *                     expiresAt:
+ *                       type: integer
+ *                       description: Expiration timestamp (ms) for accessToken
+ *                     refreshTokenExpiresAt:
+ *                       type: integer
+ *                       description: Expiration timestamp (ms) for refreshToken
+ *                     user:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                         name:
+ *                           type: string
+ *                         username:
+ *                           type: string
+ *                         createdAt:
+ *                           type: string
+ *                           format: date-time
+ *                         updatedAt:
+ *                           type: string
+ *                           format: date-time
+ *                 errors:
+ *                   type: array
+ *                   items:
+ *                     type: string
  *       400:
  *         description: Invalid credentials
+ *       500:
+ *         description: Internal server error
  */
 router.post(
   "/v1/users/login",
@@ -250,6 +293,13 @@ router.post(
           refreshToken,
           expiresAt: accessExp * 1000,
           refreshTokenExpiresAt: refreshExp * 1000,
+          user: {
+            id: user._id,
+            name: user.name,
+            username: user.username,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          },
         },
         errors: null,
       });
