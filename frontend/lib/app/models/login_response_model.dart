@@ -1,4 +1,4 @@
-import 'user_model.dart'; // ajuste o import se necessário
+import 'user_model.dart';
 
 class LoginResponseModel {
   String? accessToken;

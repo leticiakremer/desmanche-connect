@@ -121,16 +121,16 @@ class _PostsPageState extends State<PostsPage> {
               hintText: "Buscar postagem",
               hintStyle: const TextStyle(color: Colors.white54),
               filled: true,
-              fillColor: const Color(0xFF22232B), // Fundo escuro
+              fillColor: const Color(0xFF22232B), 
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16.0),
               enabledBorder: OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.white24),
-                borderRadius: BorderRadius.circular(12), // 🔹 Borda arredondada
+                borderRadius: BorderRadius.circular(12), 
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
-                    color: Color(0xFF007BFF), width: 1.5), // 🔹 Azul ao focar
+                    color: Color(0xFF007BFF), width: 1.5),
                 borderRadius: BorderRadius.circular(12),
               ),
               focusedErrorBorder: OutlineInputBorder(
@@ -216,7 +216,7 @@ class _PostsPageState extends State<PostsPage> {
                     crossAxisCount: crossAxisCount,
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 20,
-                    childAspectRatio: 16 / 10, // 🔹 Proporção do card
+                    childAspectRatio: 16 / 10,
                   ),
                   itemBuilder: (context, index) {
                     if (index < filteredPosts.length) {

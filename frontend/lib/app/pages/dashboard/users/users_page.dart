@@ -136,7 +136,7 @@ class _UsersPageState extends State<UsersPage> {
                 hintText: "Pesquisar usuário",
                 hintStyle: const TextStyle(color: Colors.white54),
                 filled: true,
-                fillColor: const Color(0xFF22232B), // 🔹 Fundo mais escuro
+                fillColor: const Color(0xFF22232B), 
                 contentPadding: const EdgeInsets.symmetric(
                     vertical: 14.0, horizontal: 16.0),
                 enabledBorder: OutlineInputBorder(
@@ -167,7 +167,7 @@ class _UsersPageState extends State<UsersPage> {
                 },
                 icon: Icon(
                   _ascending ? Icons.arrow_upward : Icons.arrow_downward,
-                  color: const Color(0xFF007BFF), // 🔹 Azul claro
+                  color: const Color(0xFF007BFF), 
                 ),
                 tooltip: 'Ordenar ${_ascending ? "A-Z" : "Z-A"}',
               ),

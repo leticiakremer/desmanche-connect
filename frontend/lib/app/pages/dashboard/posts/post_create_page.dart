@@ -35,10 +35,10 @@ class _CreatePostPageState extends State<CreatePostPage> {
     'Peças Diversas',
   ];
 
-  final Color customColor = Color(0xFF007BFF); // Azul do botão
+  final Color customColor = Color(0xFF007BFF);
   final Color focusBorderColor = Colors.white;
-  final Color backgroundColor = Color(0xFF1B1D25); // Fundo geral da tela
-  final Color cardColor = Color(0xFF232A3E); // Card escuro
+  final Color backgroundColor = Color(0xFF1B1D25);
+  final Color cardColor = Color(0xFF232A3E);
 
   final picker = ImagePicker();
 
@@ -77,7 +77,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
           description: _descriptionController.text.trim(),
           category: _selectedCategory!,
           active: _isActive,
-          images: _images, // Agora passa lista XFile
+          images: _images,
           coverImage: _coverImage,
           price: price.toDouble(),
         );
@@ -292,9 +292,8 @@ class _CreatePostPageState extends State<CreatePostPage> {
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
       labelText: label,
-      labelStyle: const TextStyle(color: Colors.white), // Label normal
-      floatingLabelStyle:
-          const TextStyle(color: Colors.white), // Label flutuante ao focar
+      labelStyle: const TextStyle(color: Colors.white),
+      floatingLabelStyle: const TextStyle(color: Colors.white),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: customColor.withOpacity(0.5)),
         borderRadius: BorderRadius.circular(10),

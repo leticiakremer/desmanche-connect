@@ -24,9 +24,9 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   bool _obscurePassword = true;
   String? _loginError;
 
-  final Color customColor = const Color(0xFF007BFF); // azul principal
-  final Color backgroundColor = Color(0xFF171821); // fundo geral escuro
-  final Color cardColor = Color(0xFF1F1F2A); // fundo do card
+  final Color customColor = const Color(0xFF007BFF); 
+  final Color backgroundColor = Color(0xFF171821);
+  final Color cardColor = Color(0xFF1F1F2A); 
 
   void _clearError() {
     if (_loginError != null) {

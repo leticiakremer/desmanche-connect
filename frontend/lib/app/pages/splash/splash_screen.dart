@@ -3,19 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pds_front/app/pages/dashboard/admin_login_screen.dart';
 import 'package:pds_front/app/pages/dashboard/posts/posts_page.dart';
 
-/*
-Mostra um ícone e carregando por 2 segundos (Future.delayed) → isso simula uma “tela de carregamento”.
 
-Usa o SharedPreferences para verificar se existe um valor salvo com a chave "AccountData".
-
-Se existe:
-
-Vai direto para a HomePage.
-
-Se não existe:
-
-Vai para a AdminLoginScreen (tela de login).
-*/
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -29,12 +17,10 @@ class _SplashScreenState extends State<SplashScreen> {
     final userData = prefs.getString("AccountData");
 
     print(
-        'Dados salvos no login: $userData'); // <- Aqui mostra se tem algo salvo
+        'Dados salvos no login: $userData'); 
 
-    await Future.delayed(const Duration(seconds: 2)); // só para simular loading
-
+    await Future.delayed(const Duration(seconds: 2)); 
     if (userData != null) {
-      // Se quiser validar o token aqui, pode
       if (mounted) {
         Navigator.pushReplacement(
           context,

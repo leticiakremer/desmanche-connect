@@ -49,7 +49,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFF007BFF), // azul principal
+                    color: Color(0xFF007BFF), 
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: const EdgeInsets.all(10),

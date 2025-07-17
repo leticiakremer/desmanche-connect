@@ -252,12 +252,12 @@ class _EditPostPageState extends State<EditPostPage> {
                                         onPressed: () => setState(() {
                                           _imagesToKeep.remove(url);
                                           _existingImageUrls = List.from(
-                                              _imagesToKeep); // mantém sincronizadas
+                                              _imagesToKeep); 
                                           if (_coverImage >=
                                               _existingImageUrls.length +
                                                   _images.length) {
                                             _coverImage =
-                                                0; // previne index inválido
+                                                0; 
                                           }
                                         }),
                                       ),

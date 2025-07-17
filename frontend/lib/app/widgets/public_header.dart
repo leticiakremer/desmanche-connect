@@ -16,12 +16,11 @@ class PublicHeader extends StatelessWidget {
     return Column(
       children: [
         Container(
-          color: const Color(0xFF1A1B23), // Fundo escuro
+          color: const Color(0xFF1A1B23), 
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // 🏷️ Título
               const Text(
                 "Desmanche Connect",
                 style: TextStyle(
@@ -32,7 +31,6 @@ class PublicHeader extends StatelessWidget {
                 ),
               ),
 
-              // 🔍 Campo de busca
               SizedBox(
                 width: 450,
                 child: DebounceInput(
@@ -41,7 +39,7 @@ class PublicHeader extends StatelessWidget {
                   onChanged: onSearchChanged,
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.search,
-                        color: Colors.white54), // 🔍 ícone de busca
+                        color: Colors.white54), 
                     hintText: 'Pesquisar peças para o seu veículo',
                     filled: true,
                     fillColor: const Color(0xFF252A3A),
@@ -66,7 +64,7 @@ class PublicHeader extends StatelessWidget {
                 ),
               ),
 
-              // 📌 Links de navegação
+            
               Row(
                 children: [
                   _HeaderNavItem(
@@ -92,7 +90,6 @@ class PublicHeader extends StatelessWidget {
           ),
         ),
 
-        // 🔻 Divider inferior
         const Divider(
           height: 1,
           thickness: 0.4,

@@ -27,9 +27,9 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF171821),
         textSelectionTheme: const TextSelectionThemeData(
-          selectionColor: Color(0xFF007BFF), // 🔵 fundo da seleção
-          selectionHandleColor: Colors.white, // ⚪ alças da seleção
-          cursorColor: Color(0xFF007BFF), // 🔵 cursor piscando
+          selectionColor: Color(0xFF007BFF),
+          selectionHandleColor: Colors.white,
+          cursorColor: Color(0xFF007BFF), 
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,

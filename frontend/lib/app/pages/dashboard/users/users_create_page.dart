@@ -19,11 +19,10 @@ class _CreateUserPageState extends State<CreateUserPage> {
 
   bool _isLoading = false;
 
- final Color customColor = Color(0xFF007BFF); // Azul do botão
+ final Color customColor = Color(0xFF007BFF); 
 final Color focusBorderColor = Colors.white;
-final Color backgroundColor = Color(0xFF1B1D25); // Fundo geral da tela
-final Color cardColor = Color(0xFF232A3E); // Card escuro
-
+final Color backgroundColor = Color(0xFF1B1D25);
+final Color cardColor = Color(0xFF232A3E); 
 
   void _clearForm() {
     _formKey.currentState?.reset();
@@ -47,7 +46,7 @@ final Color cardColor = Color(0xFF232A3E); // Card escuro
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Usuário criado com sucesso!')),
           );
-          _clearForm(); // ✅ limpa os campos
+          _clearForm(); 
         }
       } catch (e) {
         if (context.mounted) {

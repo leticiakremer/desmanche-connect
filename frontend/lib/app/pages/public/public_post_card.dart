@@ -51,7 +51,7 @@ class PublicPostCard extends StatelessWidget {
                         child: Image.network(
                           imageUrl,
                           fit: BoxFit.cover,
-                          height: 200, // largura dinâmica
+                          height: 200,
                           errorBuilder: (context, error, stackTrace) =>
                               Container(
                             color: Colors.grey[800],

@@ -29,7 +29,7 @@ class PublicFooter extends StatelessWidget {
         Container(
           width: double.infinity,
           color: footerColor,
-          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24), // 🔽 padding reduzido
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24), 
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1200),
@@ -42,7 +42,7 @@ class PublicFooter extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _aboutColumn(),
-                            const SizedBox(height: 16), // 🔽 menos espaço entre colunas
+                            const SizedBox(height: 16), 
                             _navColumn(router, location),
                             const SizedBox(height: 16),
                             _supportColumn(router),
@@ -73,7 +73,7 @@ class PublicFooter extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Desmanche Connect', style: titleStyle),
-          SizedBox(height: 8), // 🔽 menos espaço
+          SizedBox(height: 8), 
           Text(
             'Conectando você às melhores peças e veículos para o seu veículo',
             style: itemStyle,

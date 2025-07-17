@@ -49,7 +49,6 @@ class PostDetailsPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // 🔹 Galeria de imagens
                         SizedBox(
                           height: 250,
                           child: ScrollConfiguration(
@@ -99,7 +98,6 @@ class PostDetailsPage extends StatelessWidget {
                                 },
                               )),
                         ),
-                        // 🔹 Informações do post
                         Padding(
                           padding: const EdgeInsets.all(20),
                           child: Column(

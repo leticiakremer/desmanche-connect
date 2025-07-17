@@ -58,7 +58,6 @@ class AboutUsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // 🔹 Banner
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.asset(
@@ -68,27 +67,19 @@ class AboutUsScreen extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-
                   const SizedBox(height: 24),
-
-                  // 🔹 Divider
                   Divider(
                     color: Colors.white.withOpacity(0.2),
                     thickness: 1.2,
                     height: 24,
                   ),
-
                   const SizedBox(height: 16),
-
-                  // 🔹 Ícone centralizado
                   const Icon(
                     Icons.directions_car_filled_rounded,
                     color: Colors.white,
                     size: 48,
                   ),
-
                   const SizedBox(height: 24),
-
                   const Text(
                     'Sobre a Autodemolidora',
                     style: TextStyle(
@@ -111,21 +102,20 @@ class AboutUsScreen extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-
                   const SizedBox(height: 24),
-
-                  // 🔹 Endereço com hover
                   Center(
                     child: InkWell(
                       borderRadius: BorderRadius.circular(8),
                       hoverColor: Colors.white.withOpacity(0.05),
                       onTap: _abrirMaps,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.location_on, color: Colors.white70),
+                            const Icon(Icons.location_on,
+                                color: Colors.white70),
                             const SizedBox(width: 8),
                             const Text(
                               'Av. Arroio do Sal, 1510 - Arroio do Sal - RS, 95585-000',
@@ -139,10 +129,7 @@ class AboutUsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 32),
-
-                  // 🔹 WhatsApp
                   ElevatedButton.icon(
                     onPressed: _abrirWhatsApp,
                     icon: const Icon(Icons.chat, color: azul),
@@ -153,14 +140,14 @@ class AboutUsScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: azul,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                       elevation: 4,
                     ),
                   ),
-
                   const SizedBox(height: 100),
                 ],
               ),

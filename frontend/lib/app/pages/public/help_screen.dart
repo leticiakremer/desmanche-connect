@@ -49,9 +49,8 @@ class HelpScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // 👩‍💼 Ícone de suporte (pode ser alterado para imagem se quiser)
-                  const Icon(Icons.support_agent, size: 80, color: Colors.white),
-
+                  const Icon(Icons.support_agent,
+                      size: 80, color: Colors.white),
                   const SizedBox(height: 24),
                   const Text(
                     'Quer saber mais sobre uma peça?',
@@ -74,8 +73,6 @@ class HelpScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-
-                  // 🔘 Botão de WhatsApp
                   ElevatedButton.icon(
                     onPressed: _abrirWhatsApp,
                     icon: const Icon(Icons.chat, color: azul),
@@ -86,20 +83,19 @@ class HelpScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       foregroundColor: azul,
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
                       elevation: 4,
                     ),
                   ),
-
                   const SizedBox(height: 48),
-
-                  // 🕒 Horário e prazo de resposta
                   const Column(
                     children: [
-                      Icon(Icons.access_time_rounded, color: Colors.white70, size: 28),
+                      Icon(Icons.access_time_rounded,
+                          color: Colors.white70, size: 28),
                       SizedBox(height: 8),
                       Text(
                         'Atendimento de segunda a sexta,\ndas 9h às 18h',
