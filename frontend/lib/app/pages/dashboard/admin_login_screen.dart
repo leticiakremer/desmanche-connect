@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pds_front/app/models/login_request_model.dart';
@@ -25,9 +24,9 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   bool _obscurePassword = true;
   String? _loginError;
 
-  final Color customColor = const Color(0xFF91E4E2);
-  final Color focusBorderColor = Colors.white;
-  final Color backgroundColor = const Color(0xFF121212);
+  final Color customColor = const Color(0xFF007BFF); // azul principal
+  final Color backgroundColor = Color(0xFF171821); // fundo geral escuro
+  final Color cardColor = Color(0xFF1F1F2A); // fundo do card
 
   void _clearError() {
     if (_loginError != null) {
@@ -61,14 +60,12 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
       final storage = await SharedPreferences.getInstance();
       if (loginResponse.data != null) {
         await storage.setString("UserName", _usernameController.text);
-
         storage.setString(
             "AccountData", jsonEncode(loginResponse.data!.toJson()));
         return Router.neglect(context, () {
           return context.go(RouteManager.postsList);
         });
       } else {
-        //TODO: Mostrar na tela que n"ao foi poss
         setState(() {
           _loginError = "Usuário ou senha inválidos";
         });
@@ -84,10 +81,11 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 400),
           child: Card(
-            color: const Color(0xFF1E1E1E),
+            color: cardColor,
             elevation: 8,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(32.0),
               child: Form(
@@ -107,18 +105,17 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                     TextFormField(
                       controller: _usernameController,
                       style: const TextStyle(color: Colors.white),
-                      cursorColor: Colors.white,
+                      cursorColor: customColor,
                       decoration: InputDecoration(
                         labelText: 'Usuário',
-                        labelStyle: TextStyle(color: customColor),
-                        prefixIcon: Icon(Icons.person, color: customColor),
+                        labelStyle: const TextStyle(color: Colors.white70),
+                        prefixIcon: const Icon(Icons.person, color: Colors.white70),
                         enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: customColor.withOpacity(0.5)),
+                          borderSide: const BorderSide(color: Colors.white30),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: focusBorderColor),
+                          borderSide: BorderSide(color: customColor),
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
@@ -134,17 +131,15 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                       controller: _passwordController,
                       obscureText: _obscurePassword,
                       style: const TextStyle(color: Colors.white),
-                      cursorColor: Colors.white,
+                      cursorColor: customColor,
                       decoration: InputDecoration(
                         labelText: 'Senha',
-                        labelStyle: TextStyle(color: customColor),
-                        prefixIcon: Icon(Icons.lock, color: customColor),
+                        labelStyle: const TextStyle(color: Colors.white70),
+                        prefixIcon: const Icon(Icons.lock, color: Colors.white70),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: customColor.withOpacity(0.8),
+                            _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                            color: Colors.white60,
                           ),
                           onPressed: () {
                             setState(() {
@@ -153,12 +148,11 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                           },
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: customColor.withOpacity(0.5)),
+                          borderSide: const BorderSide(color: Colors.white30),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: focusBorderColor),
+                          borderSide: BorderSide(color: customColor),
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
@@ -180,16 +174,15 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                         style: const TextStyle(color: Colors.red),
                       ),
                     ],
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: customColor,
-                          foregroundColor: Colors.black,
+                          foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 16),
-                          textStyle:
-                              const TextStyle(fontWeight: FontWeight.bold),
+                          textStyle: const TextStyle(fontWeight: FontWeight.bold),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(24),
                           ),

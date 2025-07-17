@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pds_front/app/pages/login/admin_login_screen.dart';
+import 'package:pds_front/app/pages/dashboard/admin_login_screen.dart';
 import 'package:pds_front/app/pages/dashboard/posts/posts_page.dart';
 
 /*

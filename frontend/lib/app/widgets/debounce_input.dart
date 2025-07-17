@@ -45,6 +45,7 @@ class _DebounceInputState extends State<DebounceInput> {
       controller: _controller,
       onChanged: _onTextChanged,
       style: widget.style ?? const TextStyle(color: Colors.white),
+      cursorColor: Colors.white,
       decoration: widget.decoration ??
           InputDecoration(
             labelText: widget.label,

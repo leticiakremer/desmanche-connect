@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//drawer_item.dart: contém o componente visual reutilizável (DrawerItem) usado dentro do DrawerWidget.
+// drawer_item.dart: contém o componente visual reutilizável (DrawerItem) usado dentro do DrawerWidget.
 
 class DrawerItem extends StatelessWidget {
   final String title;
@@ -22,16 +22,19 @@ class DrawerItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
       child: Container(
         decoration: BoxDecoration(
-          color: selected ? const Color(0xFFB2F1F0) : Colors.transparent,
+          color: selected ? const Color(0xFF007BFF) : Colors.transparent, // 🔵 Azul principal ao selecionar
           borderRadius: BorderRadius.circular(12),
         ),
         child: ListTile(
-          leading: Icon(icon,
-              color: selected ? Colors.black : Colors.white70, size: 20),
+          leading: Icon(
+            icon,
+            color: selected ? Colors.white : Colors.white70,
+            size: 20,
+          ),
           title: Text(
             title,
             style: TextStyle(
-              color: selected ? Colors.black : Colors.white70,
+              color: selected ? Colors.white : Colors.white70,
               fontWeight: FontWeight.w500,
             ),
           ),

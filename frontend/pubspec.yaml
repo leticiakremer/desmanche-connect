@@ -20,6 +20,8 @@ dependencies:
   shared_preferences: ^2.5.3
   go_router: ^15.2.4
   http_parser: ^4.1.2
+  timeago: ^3.3.0
+
 
 
 
@@ -27,13 +29,17 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  dropdown_button2: ^2.3.9
 
 flutter:
   uses-material-design: true
   assets:
     - assets/
     - assets/imagecarrosel.jpg
-    - assets/imagecarrosel2.jpg
+   
     - assets/imagecarrosel3.jpg
     - assets/logo1.png
     - assets/logo2.png
+    - assets/banner1.jpeg
+    - assets/banner2.jpeg
+    - assets/banner3.jpeg
