@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pds_front/app/models/post_model.dart';
+import 'package:pds_front/config.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostCard extends StatelessWidget {
@@ -42,7 +43,7 @@ class PostCard extends StatelessWidget {
               Stack(
                 children: [
                   Image.network(
-                    "http://localhost:3000/v1/posts/images/${post.images[post.coverImage]}",
+                    "${AppConfig.baseUrl}posts/images/${post.images[post.coverImage]}",
                     width: constraints.maxWidth,
                     height: constraints.maxHeight / 2,
                     fit: BoxFit.cover,

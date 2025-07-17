@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pds_front/app/models/post_model.dart';
+import 'package:pds_front/config.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PublicPostCard extends StatelessWidget {
@@ -44,7 +45,7 @@ class PublicPostCard extends StatelessWidget {
                     itemCount: post.images.length,
                     itemBuilder: (context, index) {
                       final imageUrl =
-                          "http://localhost:3000/v1/posts/images/${post.images[index]}";
+                          "${AppConfig.baseUrl}/v1/posts/images/${post.images[index]}";
                       return AspectRatio(
                         aspectRatio: 16 / 9,
                         child: Image.network(

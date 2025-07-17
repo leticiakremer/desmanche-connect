@@ -8,6 +8,7 @@ import 'package:pds_front/app/models/create_post_model.dart';
 import 'package:pds_front/app/models/post_model.dart';
 import 'package:pds_front/app/services/posts_service.dart';
 import 'package:pds_front/app/widgets/header_widget.dart';
+import 'package:pds_front/config.dart';
 
 class EditPostPage extends StatefulWidget {
   final PostModel post;
@@ -236,7 +237,7 @@ class _EditPostPageState extends State<EditPostPage> {
                                               : null,
                                           image: DecorationImage(
                                             image: NetworkImage(
-                                                "http://localhost:3000/v1/posts/images/$url"),
+                                                "${AppConfig.baseUrl}/v1/posts/images/$url"),
                                             fit: BoxFit.cover,
                                           ),
                                         ),

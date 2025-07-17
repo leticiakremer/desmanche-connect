@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:pds_front/app/models/post_model.dart';
 import 'package:pds_front/app/services/posts_service.dart';
+import 'package:pds_front/config.dart';
 
 class PostDetailsPage extends StatelessWidget {
   final String postId;
@@ -65,7 +66,7 @@ class PostDetailsPage extends StatelessWidget {
                                 itemCount: post.images.length,
                                 itemBuilder: (context, index) {
                                   final imageUrl =
-                                      'http://localhost:3000/v1/posts/images/${post.images[index]}';
+                                      '${AppConfig.baseUrl}/v1/posts/images/${post.images[index]}';
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: ClipRRect(

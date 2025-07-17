@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pds_front/config.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:pds_front/app/models/post_model.dart';
 import 'package:pds_front/app/services/posts_service.dart';
@@ -10,7 +11,7 @@ class PublicPostDetailsPage extends StatelessWidget {
   const PublicPostDetailsPage({super.key, required this.postId});
 
   void _openWhatsapp() async {
-    final Uri url = Uri.parse("https://wa.me/SEUNUMEROAQUI");
+    final Uri url = Uri.parse("https://wa.me/num");
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
@@ -54,7 +55,7 @@ class PublicPostDetailsPage extends StatelessWidget {
 
             final post = snapshot.data!;
             final imageUrl =
-                'http://localhost:3000/v1/posts/images/${post.images[post.coverImage]}';
+                '${AppConfig.baseUrl}/v1/posts/images/${post.images[post.coverImage]}';
 
             return Stack(
               children: [

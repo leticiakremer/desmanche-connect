@@ -10,9 +10,9 @@ class AppConfig {
   static String get baseUrl {
     switch (environment) {
       case AppEnvironment.production:
-        return "https://placeholder.com/api";
+        return "https://placeholder.com/v1/";
       case AppEnvironment.development:
-        return "http://localhost:3000";
+        return "http://localhost:3000/v1/";
     }
   }
 
