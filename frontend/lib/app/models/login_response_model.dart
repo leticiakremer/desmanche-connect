@@ -1,15 +1,31 @@
+import 'user_model.dart'; // ajuste o import se necessário
+
 class LoginResponseModel {
-  final String? accessToken;
-  final String? refreshToken;
-  final int? expiresAt;
-  final int? refreshTokenExpiresAt;
+  String? accessToken;
+  String? refreshToken;
+  int? expiresAt;
+  int? refreshTokenExpiresAt;
+  UserModel? user;
 
   LoginResponseModel({
     this.accessToken,
     this.refreshToken,
     this.expiresAt,
     this.refreshTokenExpiresAt,
+    this.user,
   });
+
+  factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
+    final data = json['data'] ?? json;
+
+    return LoginResponseModel(
+      accessToken: data['accessToken'] as String?,
+      refreshToken: data['refreshToken'] as String?,
+      expiresAt: data['expiresAt'] as int?,
+      refreshTokenExpiresAt: data['refreshTokenExpiresAt'] as int?,
+      user: data['user'] != null ? UserModel.fromJson(data['user']) : null,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
@@ -17,15 +33,7 @@ class LoginResponseModel {
       'refreshToken': refreshToken,
       'expiresAt': expiresAt,
       'refreshTokenExpiresAt': refreshTokenExpiresAt,
+      'user': user?.toJson(),
     };
-  }
-
-  factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
-    return LoginResponseModel(
-      accessToken: json['accessToken'] as String?,
-      refreshToken: json['refreshToken'] as String?,
-      expiresAt: json['expiresAt'] as int?,
-      refreshTokenExpiresAt: json['refreshTokenExpiresAt'] as int?,
-    );
   }
 }

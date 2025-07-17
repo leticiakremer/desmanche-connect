@@ -375,4 +375,65 @@ router.post("/v1/users/refresh", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /v1/users/{id}:
+ *   delete:
+ *     summary: Delete user by ID
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do usuário a ser excluído
+ *     responses:
+ *       200:
+ *         description: Usuário excluído com sucesso
+ *       400:
+ *         description: Não é possível excluir este usuário
+ *       404:
+ *         description: Usuário não encontrado
+ */
+router.delete("/v1/users/:id", Authorize, async (req, res) => {
+  const { id } = req.params;
+  const loggedInUserId = req.user.id;
+
+  try {
+    const totalUsers = await UserModel.countDocuments();
+    if (totalUsers <= 1) {
+      return res.status(400).json({
+        messages: ["Não é possível excluir. Deve haver pelo menos um usuário no sistema."],
+        data: null,
+        errors: null,
+      });
+    }
+
+    const user = await UserModel.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).json({
+        messages: ["Usuário não encontrado"],
+        data: null,
+        errors: null,
+      });
+    }
+
+    return res.status(200).json({
+      messages: ["Usuário excluído com sucesso"],
+      data: null,
+      errors: null,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      messages: ["Erro ao excluir usuário"],
+      data: null,
+      errors: [err.message],
+    });
+  }
+});
+
+
 export default router;

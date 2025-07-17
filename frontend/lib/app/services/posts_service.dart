@@ -80,11 +80,59 @@ class PostService {
 
     final response = await http.Response.fromStream(streamedResponse);
 
-    print('Status: ${response.statusCode}');
-    print('Body: ${response.body}');
-
     if (response.statusCode != 201 && response.statusCode != 200) {
       throw Exception('Failed to create post');
+    }
+  }
+
+  Future<void> updatePost(String postId, CreatePostModel post) async {
+    var loginResponseModel = await UserService.getUserData();
+
+    var uri = Uri.parse('http://localhost:3000/v1/posts/$postId');
+    var request = http.MultipartRequest('PUT', uri);
+
+    // Token de autenticação
+    request.headers['Authorization'] =
+        'Bearer ${loginResponseModel.accessToken}';
+
+    // Dados principais da postagem
+    final postData = {
+      'title': post.title,
+      'description': post.description,
+      'category': post.category,
+      'active': post.active,
+      'coverImage': post.coverImage,
+      'price': post.price,
+      'existingImageIds': post.existingImages ?? [],
+    };
+    request.fields['data'] = jsonEncode(postData);
+
+    // Adiciona imagens (caso tenha imagens novas para enviar)
+    for (int i = 0; i < post.images.length; i++) {
+      final file = post.images[i];
+      final bytes = await file.readAsBytes();
+
+      final mimeTypeString = file.mimeType ?? 'image/jpeg';
+      final mimeTypeSplit = mimeTypeString.split('/');
+
+      request.files.add(
+        http.MultipartFile.fromBytes(
+          'images',
+          bytes,
+          filename: file.name,
+          contentType: MediaType(
+            mimeTypeSplit[0],
+            mimeTypeSplit.length > 1 ? mimeTypeSplit[1] : 'jpeg',
+          ),
+        ),
+      );
+    }
+
+    // Envia requisição
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    if (response.statusCode != 200) {
+      throw Exception('Erro ao atualizar post');
     }
   }
 
@@ -117,6 +165,53 @@ class PostService {
 
     if (response.statusCode != 200) {
       throw Exception('Erro ao buscar post: ${response.statusCode}');
+    }
+
+    final parsedBody = jsonDecode(response.body);
+
+    final apiResponse = ApiResponseModel.fromJson(
+      parsedBody,
+      (json) => PostModel.fromJson(json),
+    );
+
+    if (apiResponse.data == null) {
+      throw Exception('Post não encontrado');
+    }
+
+    return apiResponse.data!;
+  }
+// Método para buscar posts públicos, ele é basicamente uma cópia do getAllPosts(), mas sem o token no header.
+
+  Future<PaginatedDataModel<PostModel>> getPublicPosts(
+      int take, int skip, String? search) async {
+    final url = Uri.parse(
+        'http://localhost:3000/v1/posts?search=$search&take=$take&skip=$skip');
+
+    final response = await http.get(url);
+
+    final parsedBody = jsonDecode(response.body);
+    final apiResponse = ApiResponseModel.fromJson(
+      parsedBody,
+      (json) => PaginatedDataModel<PostModel>.fromJson(
+        json,
+        (item) => PostModel.fromJson(item),
+      ),
+    );
+
+    if (apiResponse.data == null) {
+      throw Exception('Falha ao carregar posts públicos');
+    }
+
+    return apiResponse.data!;
+  }
+
+  Future<PostModel> getPublicPostById(String postId) async {
+    final url = Uri.parse('http://localhost:3000/v1/posts/$postId');
+
+    final response = await http.get(url); // Sem token
+
+    if (response.statusCode != 200) {
+      throw Exception('Erro ao buscar post público');
     }
 
     final parsedBody = jsonDecode(response.body);

@@ -8,6 +8,7 @@ class CreatePostModel {
   final List<XFile> images;
   final int coverImage;
   final double price;
+  final List<String>? existingImages;
 
   CreatePostModel(
       {required this.title,
@@ -16,5 +17,6 @@ class CreatePostModel {
       required this.active,
       required this.images,
       required this.coverImage,
-      required this.price});
+      required this.price,
+      this.existingImages});
 }

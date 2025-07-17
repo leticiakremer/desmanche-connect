@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:pds_front/app/core/navigation/route_manager.dart';
 import 'package:pds_front/app/services/user_service.dart';
 import 'package:pds_front/app/widgets/drawer/drawer_menu_item.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pds_front/app/widgets/drawer/drawer_item.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -27,9 +26,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   }
 
   Future<void> _loadUserInfo() async {
-    final prefs = await SharedPreferences.getInstance();
+    var user = await UserService.getUserData();
     setState(() {
-      userName = prefs.getString('userName') ?? '';
+      userName = user.user?.name ?? 'Usuário';
     });
   }
 
@@ -50,13 +49,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: const Color(0xFFB2F1F0),
+                    color: Color(0xFF007BFF), // azul principal
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: const EdgeInsets.all(10),
                   child: const Icon(
                     Icons.directions_car_filled,
-                    color: Colors.black,
+                    color: Colors.white,
                     size: 20,
                   ),
                 ),
@@ -74,43 +73,53 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ),
           Expanded(
             child: ListView(
-                padding: EdgeInsets.zero,
-                children: widget.menuItems
-                    .map((menuItem) => DrawerItem(
-                          title: menuItem.title,
-                          icon: menuItem.icon,
-                          onTap: () {
-                            context.go(menuItem.route);
-                          },
-                          selected: GoRouterState.of(context).uri.path.contains(menuItem.route),
-                        ))
-                    .toList()),
+              padding: EdgeInsets.zero,
+              children: widget.menuItems
+                  .map((menuItem) => DrawerItem(
+                        title: menuItem.title,
+                        icon: menuItem.icon,
+                        onTap: () {
+                          context.go(menuItem.route);
+                        },
+                        selected: GoRouterState.of(context)
+                            .uri
+                            .path
+                            .contains(menuItem.route),
+                      ))
+                  .toList(),
+            ),
           ),
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  'Administrador:',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white70,
-                    fontSize: 14,
-                    letterSpacing: 0.3,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  userName.isNotEmpty ? userName : 'Usuário',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 18,
-                    letterSpacing: 0.5,
-                  ),
-                ),
+                const Icon(Icons.person, color: Colors.white, size: 30),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Administrador(a):',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white60,
+                        fontSize: 14,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      userName.isNotEmpty ? userName : 'Usuário',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 18,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),

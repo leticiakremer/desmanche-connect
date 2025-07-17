@@ -94,7 +94,6 @@ router.post(
     }
   }
 );
-
 /**
  * @swagger
  * /v1/posts/{id}:
@@ -126,7 +125,15 @@ router.post(
  *                 type: string
  *                 description: >
  *                   JSON string with post data, example:
- *                   { "title": "Updated title", "description": "Updated desc", "category": "Moto", "active": true, "coverImage": 1, "price": 500 }
+ *                   { 
+ *                     "title": "Updated title", 
+ *                     "description": "Updated desc", 
+ *                     "category": "Moto", 
+ *                     "active": true, 
+ *                     "coverImage": 1, 
+ *                     "price": 500,
+ *                     "existingImageIds": ["imgId1", "imgId2"]
+ *                   }
  *     responses:
  *       200:
  *         description: Post updated successfully
@@ -145,10 +152,17 @@ router.put(
     const { id } = req.params;
 
     try {
-      const { title, description, category, active, price, coverImage } =
-        JSON.parse(req.body.data);
-      const files = req.files;
+      const {
+        title,
+        description,
+        category,
+        active,
+        price,
+        coverImage,
+        existingImageIds = [],
+      } = JSON.parse(req.body.data);
 
+      const files = req.files;
       const post = await PostModel.findById(id);
       if (!post) {
         return res.status(404).json({
@@ -158,10 +172,13 @@ router.put(
         });
       }
 
-      // Remove imagens antigas
-      await ImageModel.deleteMany({ _id: { $in: post.images } });
+      // Remove apenas as imagens antigas que não estão na lista de preservação
+      const imagesToDelete = post.images.filter(
+        (imgId) => !existingImageIds.includes(imgId.toString())
+      );
+      await ImageModel.deleteMany({ _id: { $in: imagesToDelete } });
 
-      // Salva novas imagens
+      // Salva novas imagens (se houver)
       const savedImages = await Promise.all(
         files.map((file) => {
           const image = new ImageModel({
@@ -173,14 +190,13 @@ router.put(
         })
       );
 
-      // Atualiza os campos
       post.title = title;
       post.description = description;
       post.category = category;
       post.active = active;
       post.price = price;
       post.coverImage = coverImage;
-      post.images = savedImages.map((img) => img._id);
+      post.images = [...existingImageIds, ...savedImages.map((img) => img._id)];
 
       await post.save();
 
