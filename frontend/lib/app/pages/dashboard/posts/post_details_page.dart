@@ -66,7 +66,7 @@ class PostDetailsPage extends StatelessWidget {
                                 itemCount: post.images.length,
                                 itemBuilder: (context, index) {
                                   final imageUrl =
-                                      '${AppConfig.baseUrl}/v1/posts/images/${post.images[index]}';
+                                      '${AppConfig.baseUrl}posts/images/${post.images[index]}';
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: ClipRRect(

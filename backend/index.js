@@ -11,12 +11,8 @@ import {
   PORT,
 } from "./env.js";
 
-// Conecta ao MongoDB
 await mongoose.connect(MONGO_CONNECTION_STRING);
-
-// Inicializa o app
 const app = express();
-
 app.use(
   cors({
     origin: "*",
@@ -27,13 +23,14 @@ app.use(
 
 app.use(bodyParser.json({ limit: "100mb" }));
 
-// Rotas
 app.use(UserRoutes);
 app.use(PostRoutes);
 
 setupSwagger(app);
+app.get("/ready", (req, res) => {
+  res.status(200).send("OK");
+});
 
-// Inicializa o servidor
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
 });

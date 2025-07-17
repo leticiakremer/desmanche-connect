@@ -45,7 +45,7 @@ class PublicPostCard extends StatelessWidget {
                     itemCount: post.images.length,
                     itemBuilder: (context, index) {
                       final imageUrl =
-                          "${AppConfig.baseUrl}/v1/posts/images/${post.images[index]}";
+                          "${AppConfig.baseUrl}posts/images/${post.images[index]}";
                       return AspectRatio(
                         aspectRatio: 16 / 9,
                         child: Image.network(

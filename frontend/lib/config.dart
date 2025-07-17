@@ -10,7 +10,7 @@ class AppConfig {
   static String get baseUrl {
     switch (environment) {
       case AppEnvironment.production:
-        return "https://placeholder.com/v1/";
+        return "https://desmanche-connect-540750841500.southamerica-east1.run.app/v1/";
       case AppEnvironment.development:
         return "http://localhost:3000/v1/";
     }

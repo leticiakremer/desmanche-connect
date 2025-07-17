@@ -55,7 +55,7 @@ class PublicPostDetailsPage extends StatelessWidget {
 
             final post = snapshot.data!;
             final imageUrl =
-                '${AppConfig.baseUrl}/v1/posts/images/${post.images[post.coverImage]}';
+                '${AppConfig.baseUrl}posts/images/${post.images[post.coverImage]}';
 
             return Stack(
               children: [

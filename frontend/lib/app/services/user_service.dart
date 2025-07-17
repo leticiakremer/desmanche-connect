@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserService {
   Future<ApiResponseModel<LoginResponseModel>> login(
       LoginRequestModel model) async {
-    var url = Uri.parse('${AppConfig.baseUrl}/v1/users/login');
+    var url = Uri.parse('${AppConfig.baseUrl}users/login');
     var response = await http.post(
       url,
       headers: {
@@ -49,7 +49,7 @@ class UserService {
 
     var loginResponseModel = LoginResponseModel.fromJson(jsonDecode(rawData));
 
-    var url = Uri.parse('${AppConfig.baseUrl}/v1/users/refresh');
+    var url = Uri.parse('${AppConfig.baseUrl}users/refresh');
     var response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -73,7 +73,7 @@ class UserService {
     final user = await getUserData();
 
     final response = await http.delete(
-      Uri.parse('${AppConfig.baseUrl}/v1/users/$userId'),
+      Uri.parse('${AppConfig.baseUrl}users/$userId'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${user.accessToken}',
@@ -139,7 +139,7 @@ class UserService {
     final accessToken = loginResponse.accessToken;
 
     final response = await http.get(
-      Uri.parse('${AppConfig.baseUrl}/v1/users?skip=$skip&take=$take'),
+      Uri.parse('${AppConfig.baseUrl}users?skip=$skip&take=$take'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',
@@ -171,7 +171,7 @@ class UserService {
     final accessToken = loginResponse.accessToken;
 
     final response = await http.post(
-      Uri.parse('${AppConfig.baseUrl}/v1/users/register'),
+      Uri.parse('${AppConfig.baseUrl}users/register'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken',

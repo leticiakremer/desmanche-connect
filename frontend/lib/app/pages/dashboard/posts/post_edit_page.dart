@@ -237,7 +237,7 @@ class _EditPostPageState extends State<EditPostPage> {
                                               : null,
                                           image: DecorationImage(
                                             image: NetworkImage(
-                                                "${AppConfig.baseUrl}/v1/posts/images/$url"),
+                                                "${AppConfig.baseUrl}posts/images/$url"),
                                             fit: BoxFit.cover,
                                           ),
                                         ),
