@@ -27428,7 +27428,7 @@ case 3:j=b
 i=A.cg(j.a.h(0,"AccountData"))
 if(i==null)throw A.h(A.c3("No user data found"))
 p=A.AK(B.Z.ha(i,null))
-o=A.c0(A.f2()+"/v1/users/refresh",0,null)
+o=A.c0(A.f2()+"users/refresh",0,null)
 n=t.N
 m=A.a8(["Content-Type","application/json"],n,n)
 s=4
@@ -27458,7 +27458,7 @@ return A.M(A.lZ(),$async$QG)
 case 2:q=c
 p=t.N
 s=3
-return A.M(A.aBz(A.c0(A.f2()+"/v1/users/"+a,0,null),A.a8(["Content-Type","application/json","Authorization","Bearer "+A.l(q.a)],p,p)),$async$QG)
+return A.M(A.aBz(A.c0(A.f2()+"users/"+a,0,null),A.a8(["Content-Type","application/json","Authorization","Bearer "+A.l(q.a)],p,p)),$async$QG)
 case 3:o=c
 if(o.b!==200){p=J.iJ(B.Z.ha(A.oO(A.oF(o.e)).dv(o.w),null),"message")
 throw A.h(A.c3(p==null?"Erro ao deletar usu\xe1rio":p))}return A.I(null,r)}})
@@ -27525,7 +27525,7 @@ if(m==null)throw A.h(A.c3("Usu\xe1rio n\xe3o autenticado"))
 p=A.AK(B.Z.ha(m,null)).a
 o=t.N
 s=4
-return A.M(A.a_i(A.c0(A.f2()+"/v1/users?skip="+a+"&take="+b,0,null),A.a8(["Content-Type","application/json","Authorization","Bearer "+A.l(p)],o,o)),$async$QH)
+return A.M(A.a_i(A.c0(A.f2()+"users?skip="+a+"&take="+b,0,null),A.a8(["Content-Type","application/json","Authorization","Bearer "+A.l(p)],o,o)),$async$QH)
 case 4:n=d
 o=n.b
 if(o===200){q=J.xS(J.iJ(J.iJ(B.Z.ha(A.oO(A.oF(n.e)).dv(n.w),null),"data"),"items"),t.a)
@@ -27543,7 +27543,7 @@ return A.M(A.lJ(),$async$QF)
 case 2:l=k.cg(e.a.h(0,"AccountData"))
 if(l==null)throw A.h(A.c3("Usu\xe1rio n\xe3o autenticado"))
 q=A.AK(B.Z.ha(l,null)).a
-p=A.c0(A.f2()+"/v1/users/register",0,null)
+p=A.c0(A.f2()+"users/register",0,null)
 o=t.N
 n=A.a8(["Content-Type","application/json","Authorization","Bearer "+A.l(q)],o,o)
 s=3
@@ -91144,7 +91144,7 @@ return A.dk(new A.d3(B.en,new A.bh(B.oG,A.ta(A.ci(A.b([q,new A.bh(B.eN,A.ci(A.b(
 $S:570}
 A.adU.prototype={
 $2(a,b){var s=A.f2(),r=this.a.f[b]
-return new A.bh(B.eP,A.Kt(A.b8(12),A.a7s(s+"/v1/posts/images/"+r,new A.adS(),B.cD,null,new A.adT(),300),B.be),null)},
+return new A.bh(B.eP,A.Kt(A.b8(12),A.a7s(s+"posts/images/"+r,new A.adS(),B.cD,null,new A.adT(),300),B.be),null)},
 $S:571}
 A.adT.prototype={
 $3(a,b,c){return b},
@@ -91298,7 +91298,7 @@ $0(){return this.a.x=this.b},
 $S:0}
 A.ap7.prototype={
 $1(a){var s=null,r=a.a,q=a.b,p=this.a,o=A.b8(10),n=p.y===r?A.yn(B.fa,3):s
-return A.iu(B.bD,A.b([A.eR(s,A.cG(s,s,B.r,s,s,new A.cc(s,A.az0(B.cD,new A.qk(A.f2()+"/v1/posts/images/"+q,1,s,B.BG),s),n,o,s,s,s,B.a4),100,s,s,100),B.V,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,new A.ap_(p,r),s,s,s,s,s,s),A.kh(s,A.u8(s,s,B.IY,s,s,new A.ap0(p,q),s,s,s),s,s,s,0,0,s)],t.p),B.C,B.br,s)},
+return A.iu(B.bD,A.b([A.eR(s,A.cG(s,s,B.r,s,s,new A.cc(s,A.az0(B.cD,new A.qk(A.f2()+"posts/images/"+q,1,s,B.BG),s),n,o,s,s,s,B.a4),100,s,s,100),B.V,!1,s,s,s,s,s,s,s,s,s,s,s,s,s,new A.ap_(p,r),s,s,s,s,s,s),A.kh(s,A.u8(s,s,B.IY,s,s,new A.ap0(p,q),s,s,s),s,s,s,0,0,s)],t.p),B.C,B.br,s)},
 $S:574}
 A.ap_.prototype={
 $0(){var s=this.a
@@ -91862,7 +91862,7 @@ j.toString
 j=A.aIW(j,"pt_BR")}else j=""
 return A.ta(A.ci(A.b([h,new A.bh(B.Hq,A.ci(A.b([s,B.AX,r,B.Sl,A.dp(A.b([q,A.bp(j,n,n,n,B.Bm,n,n)],i),B.z,B.cm,B.F)],i),B.aB,B.v,B.F),n)],i),B.aB,B.v,B.F),B.be,B.eA,2,B.eP,new A.bI(k,B.m))}}
 A.aef.prototype={
-$2(a,b){return new A.p_(1.7777777777777777,A.a7s(A.f2()+"/v1/posts/images/"+this.a.c.f[b],new A.aee(),B.cD,200,null,null),null)},
+$2(a,b){return new A.p_(1.7777777777777777,A.a7s(A.f2()+"posts/images/"+this.a.c.f[b],new A.aee(),B.cD,200,null,null),null)},
 $S:582}
 A.aee.prototype={
 $3(a,b,c){var s=null
@@ -91909,7 +91909,7 @@ else{s=b.b
 if(s==null)return B.nu}}r=A.f2()
 q=s.f[s.r]
 p=A.b8(16)
-q=A.Kt(A.b8(8),A.a7s(r+"/v1/posts/images/"+q,new A.aei(),B.cD,250,new A.aej(),1/0),B.be)
+q=A.Kt(A.b8(8),A.a7s(r+"posts/images/"+q,new A.aei(),B.cD,250,new A.aej(),1/0),B.be)
 r=s.b
 o=A.N(a).ok.f
 r=A.bp(r,h,h,h,o==null?h:o.VN(B.P,B.aR),h,h)
@@ -91945,7 +91945,7 @@ return A.M(A.lZ(),$async$rD)
 case 3:p=e
 o=t.N
 s=4
-return A.M(A.a_i(A.c0(A.f2()+"/v1/posts?search="+c+"&take="+a+"&skip="+b,0,null),A.a8(["Authorization","Bearer "+A.l(p.a)],o,o)),$async$rD)
+return A.M(A.a_i(A.c0(A.f2()+"posts?search="+c+"&take="+a+"&skip="+b,0,null),A.a8(["Authorization","Bearer "+A.l(p.a)],o,o)),$async$rD)
 case 4:n=e
 o=A.Ju(B.Z.ha(A.oO(A.oF(n.e)).dv(n.w),null),new A.adY(),t.YM).b
 if(o==null)throw A.h(A.c3("Failed to load posts"))
@@ -91960,7 +91960,7 @@ var $async$o4=A.G(function(a5,a6){if(a5===1)return A.H(a6,r)
 while(true)switch(s){case 0:s=2
 return A.M(A.lZ(),$async$o4)
 case 2:a1=a6
-a2=A.aEN("POST",A.c0(A.f2()+"/v1/posts",0,null))
+a2=A.aEN("POST",A.c0(A.f2()+"posts",0,null))
 a2.r.m(0,"Authorization","Bearer "+A.l(a1.a))
 q=t.N
 a2.x.m(0,"data",B.Z.mC(A.a8(["title",a4.a,"description",a4.b,"category",a4.c,"active",a4.d,"coverImage",a4.f,"price",a4.r],q,t.K),null))
@@ -92002,7 +92002,7 @@ var $async$oU=A.G(function(a6,a7){if(a6===1)return A.H(a7,r)
 while(true)switch(s){case 0:s=2
 return A.M(A.lZ(),$async$oU)
 case 2:a1=a7
-a2=A.aEN("PUT",A.c0(A.f2()+"/v1/posts/"+a4,0,null))
+a2=A.aEN("PUT",A.c0(A.f2()+"posts/"+a4,0,null))
 a2.r.m(0,"Authorization","Bearer "+A.l(a1.a))
 q=a5.w
 if(q==null)q=A.b([],t.s)
@@ -92047,7 +92047,7 @@ return A.M(A.lZ(),$async$v9)
 case 2:q=c
 p=t.N
 s=3
-return A.M(A.aBz(A.c0(A.f2()+"/v1/posts/"+a,0,null),A.a8(["Authorization","Bearer "+A.l(q.a)],p,p)),$async$v9)
+return A.M(A.aBz(A.c0(A.f2()+"posts/"+a,0,null),A.a8(["Authorization","Bearer "+A.l(q.a)],p,p)),$async$v9)
 case 3:if(c.b!==200)throw A.h(A.c3("Falha ao deletar o post"))
 return A.I(null,r)}})
 return A.J($async$v9,r)},
@@ -92059,7 +92059,7 @@ return A.M(A.lZ(),$async$rJ)
 case 3:p=c
 o=t.N
 s=4
-return A.M(A.a_i(A.c0(A.f2()+"/v1/posts/"+a,0,null),A.a8(["Authorization","Bearer "+A.l(p.a),"Content-Type","application/json"],o,o)),$async$rJ)
+return A.M(A.a_i(A.c0(A.f2()+"posts/"+a,0,null),A.a8(["Authorization","Bearer "+A.l(p.a),"Content-Type","application/json"],o,o)),$async$rJ)
 case 4:n=c
 o=n.b
 if(o!==200)throw A.h(A.c3("Erro ao buscar post: "+o))
@@ -92074,7 +92074,7 @@ wY(a,b,c){return this.a_l(a,b,c)},
 a_l(a,b,c){var s=0,r=A.K(t.YM),q,p,o
 var $async$wY=A.G(function(d,e){if(d===1)return A.H(e,r)
 while(true)switch(s){case 0:s=3
-return A.M(A.a_i(A.c0(A.f2()+"/v1/posts?search="+c+"&take="+a+"&skip="+b,0,null),null),$async$wY)
+return A.M(A.a_i(A.c0(A.f2()+"posts?search="+c+"&take="+a+"&skip="+b,0,null),null),$async$wY)
 case 3:p=e
 o=A.Ju(B.Z.ha(A.oO(A.oF(p.e)).dv(p.w),null),new A.ae1(),t.YM).b
 if(o==null)throw A.h(A.c3("Falha ao carregar posts p\xfablicos"))
@@ -92087,7 +92087,7 @@ wX(a){return this.a_k(a)},
 a_k(a){var s=0,r=A.K(t.ix),q,p,o
 var $async$wX=A.G(function(b,c){if(b===1)return A.H(c,r)
 while(true)switch(s){case 0:s=3
-return A.M(A.a_i(A.c0(A.f2()+"/v1/posts/"+a,0,null),null),$async$wX)
+return A.M(A.a_i(A.c0(A.f2()+"posts/"+a,0,null),null),$async$wX)
 case 3:o=c
 if(o.b!==200)throw A.h(A.c3("Erro ao buscar post p\xfablico"))
 p=A.Ju(B.Z.ha(A.oO(A.oF(o.e)).dv(o.w),null),new A.ae_(),t.ix).b
@@ -92119,7 +92119,7 @@ A.akT.prototype={
 Bi(a){return this.ar6(a)},
 ar6(a){var s=0,r=A.K(t.nc),q,p,o,n
 var $async$Bi=A.G(function(b,c){if(b===1)return A.H(c,r)
-while(true)switch(s){case 0:o=A.c0(A.f2()+"/v1/users/login",0,null)
+while(true)switch(s){case 0:o=A.c0(A.f2()+"users/login",0,null)
 n=t.N
 n=A.a8(["Content-Type","application/json"],n,n)
 s=3
