@@ -27607,7 +27607,7 @@ _.e=c
 _.a=d},
 aqc:function aqc(a,b){this.a=a
 this.b=b},
-f2(){switch($.Jw.bf().a){case 1:return"https://placeholder.com/v1/"
+f2(){switch($.Jw.bf().a){case 1:return"https://desmanche-connect-540750841500.southamerica-east1.run.app/v1/"
 case 0:return"http://localhost:3000/v1/"}},
 a09:function a09(a,b){this.a=a
 this.b=b},
